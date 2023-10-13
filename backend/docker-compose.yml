@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build:
+      context: ./
+    command: >-
+      bash -c "uvicorn main_fastapi:app --host 0.0.0.0 --reload --port 8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./:/code/"
