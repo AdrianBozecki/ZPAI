@@ -1,3 +1,29 @@
-# Pliki i katalogi związane z PyCharm/IntelliJ IDEA
+# BACKEND
 .idea/
 *.iml
+
+
+# FRONTEND
+.DS_Store
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.idea/
+.vscode/
+*.swp
+*.swo
+
+/build/
+
+/coverage/
