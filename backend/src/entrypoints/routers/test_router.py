@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-test_routero = APIRouter()
+first_router = APIRouter()
 
 
-@test_routero.get("/test_router/")
+@first_router.get("/test_router/")
 async def test_endpoint() -> dict[str, str]:
     return {"message": "Hello World"}
