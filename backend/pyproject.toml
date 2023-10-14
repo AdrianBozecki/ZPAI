@@ -2,7 +2,7 @@
 name = "meal_fuel"
 version = "0.1.0"
 description = ""
-authors = ["Twoje imię <twoj.email@example.com>"]
+authors = ["Adrian Bożęcki <mail.bozecki@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"

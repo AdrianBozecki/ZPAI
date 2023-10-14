@@ -3,38 +3,38 @@ export PYTHONPATH := /code/src
 
 .PHONY: Makefile
 
-dc_%: #
+dc_%:
 	docker-compose run -w /code/ fastapi make $*
 
-bash: #
+bash:
 	bash
 
-poetry_install: ## Update packages
+poetry_install:
 	poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
 
-poetry_lock: #
+poetry_lock:
 	poetry lock --no-update
 
-all: lint mypy test #
+all: lint mypy test
 
-black-check: #
+black-check:
 	black src/ --diff --check --color
 
-isort-check: #
+isort-check:
 	isort src/ --diff --check --color
 
-flake8-check: #
+flake8-check:
 	flake8 src/
 
-lint_full full_lint: lint mypy #
+lint_full full_lint: lint
 
-lint: black-check isort-check flake8-check
+lint: black-check isort-check flake8-check mypy
 
-lint_fix: #
+lint_fix:
 	black .
 	isort .
 
-mypy: #
+mypy:
 	mypy src/ --show-error-codes --show-traceback --implicit-reexport
 
 
