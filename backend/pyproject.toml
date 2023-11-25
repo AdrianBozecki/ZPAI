@@ -11,6 +11,12 @@ fastapi-restful = "^v0.5.0"
 uvicorn = "^0.15.0"
 pydantic = "^2.3.0"
 pydantic-settings = "^2.0.3"
+sqlalchemy = "^2.0.22"
+alembic = "^1.12.1"
+psycopg2 = "^2.9.9"
+asyncpg = "^0.29.0"
+typing-inspect = "^0.9.0"
+fastapi-pagination = "^0.12.9"
 
 [tool.poetry.group.dev.dependencies]
 aioresponses = "^0.7.4"
@@ -44,14 +50,17 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
+exclude = 'alembic/'
 
 [tool.isort]
 line_length = 100
 order_by_type = false
 profile = "black"
+skip = "alembic/"
 
 [tool.flake8]
 max-line-length = 160
+extend-immutable-calls = ["Query", "Path", "Body", "Depends", "params.Depends", "Header", "fastapi.Depends", "fastapi.params.Depends"]
 
 [tool.mypy]
 disallow_untyped_defs = true

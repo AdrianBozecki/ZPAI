@@ -37,4 +37,11 @@ lint_fix:
 mypy:
 	mypy src/ --show-error-codes --show-traceback --implicit-reexport
 
+alembic_revision:
+	alembic revision --autogenerate -m "$(message)"
+
+alembic_upgrade:
+	alembic upgrade head
+
+
 
