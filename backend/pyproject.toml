@@ -50,11 +50,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
+exclude = 'alembic/'
 
 [tool.isort]
 line_length = 100
 order_by_type = false
 profile = "black"
+skip = "alembic/"
 
 [tool.flake8]
 max-line-length = 160

@@ -9,5 +9,5 @@ class Meals(Base):
     id = Column(Integer, primary_key=True, index=True)  # noqa: A003
     name = Column(String, index=True)
     description = Column(String, index=True)
-    price = Column(Integer, index=True)
+    price = Column(String, index=True)
     user_id = Column(Integer, index=True)
