@@ -1,3 +1,7 @@
+import bcrypt
+from fastapi import HTTPException
+from sqlalchemy import select
+
 from business_logic.entities.users import CreateUserEntity, UserEntity
 from business_logic.interfaces.users import UsersRepositoryInterface
 from database import AsyncSessionLocal
@@ -18,9 +22,10 @@ class UsersRepository(UsersRepositoryInterface):
         await self.db.flush()
         await self.db.refresh(user_details_row)
 
+        hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
         user_row = User(
             email=user.email,
-            password=user.password,
+            password=hashed_password.decode('utf-8'),
             user_details_id=user_details_row.id,
         )
         self.db.add(user_row)
@@ -30,9 +35,45 @@ class UsersRepository(UsersRepositoryInterface):
         return UserEntity(
             id=user_row.id,
             email=user_row.email,
-            password=user_row.password,
             user_details_id=user_details_row.id,
             name=user_details_row.name,
             lastname=user_details_row.lastname,
             phone_number=user_details_row.phone_number,
         )
+
+    async def get_user(self, user_id: int) -> UserEntity:
+        query = select(User, UserDetails).join(UserDetails).where(User.id == user_id)
+        user_row, user_details_row = (await self.db.execute(query)).first()
+
+        return UserEntity(
+            id=user_row.id,
+            email=user_row.email,
+            user_details_id=user_details_row.id,
+            name=user_details_row.name,
+            lastname=user_details_row.lastname,
+            phone_number=user_details_row.phone_number,
+        )
+
+    async def login_user(self, email: str, password: str) -> UserEntity | None:
+        query = select(User, UserDetails).join(UserDetails).where(User.email == email)
+        result = await self.db.execute(query)
+        user_result = result.first()
+
+        if user_result is None:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        user_row, user_details_row = user_result
+
+        if not bcrypt.checkpw(password.encode('utf-8'), user_row.password.encode('utf-8')):
+            raise HTTPException(status_code=401, detail="Incorrect password")
+
+        return UserEntity(
+            id=user_row.id,
+            email=user_row.email,
+            user_details_id=user_details_row.id,
+            name=user_details_row.name,
+            lastname=user_details_row.lastname,
+            phone_number=user_details_row.phone_number,
+        )
+
+

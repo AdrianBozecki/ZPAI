@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from business_logic.entities.users import CreateUserEntity, UserEntity
-from business_logic.use_cases.users import CreateUserUseCase
+from business_logic.use_cases.users import CreateUserUseCase, GetUserUseCase, LoginUserUseCase
 from repositories.users.repository import UsersRepository
 from routers.meals import get_db
 
@@ -31,4 +31,31 @@ class UsersCBV:
     ) -> UserEntity:
         use_case = CreateUserUseCase(self.repo)
         user = await use_case.execute(item)
+        return user
+
+
+    @users_router.get(
+        f"{USERS_BASE_URL}/{{user_id:str}}/",
+        summary="Get user",
+        response_description="User object",
+        status_code=status.HTTP_200_OK,
+        response_model=UserEntity)
+    async def get_user(self, user_id: int) -> UserEntity:
+        use_case = GetUserUseCase(self.repo)
+        user = await use_case.execute(user_id)
+        return user
+
+
+    @users_router.post(
+        f"{USERS_BASE_URL}/login/",
+        summary="Login",
+        response_description="User object",
+        status_code=status.HTTP_200_OK,
+        response_model=UserEntity
+    )
+    async def login(self,
+                    email: str = Body(..., description="User email"),
+                    password: str = Body(..., description="User password")) -> UserEntity:
+        use_case = LoginUserUseCase(self.repo)
+        user = await use_case.execute(email, password)
         return user

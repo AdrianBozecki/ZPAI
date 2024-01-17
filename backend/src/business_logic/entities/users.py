@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 class BaseUserEntity(BaseModel):
     email: str
-    password: str
     name: str
     lastname: str
     phone_number: str
@@ -11,7 +10,7 @@ class BaseUserEntity(BaseModel):
 
 
 class CreateUserEntity(BaseUserEntity):
-    ...
+    password: str
 
 
 class UserEntity(BaseUserEntity):
