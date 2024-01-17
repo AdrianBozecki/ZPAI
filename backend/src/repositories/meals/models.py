@@ -40,7 +40,7 @@ class Meal(Base):
     categories: Mapped[list[Category]] = relationship(
         "Category",
         secondary=meal_category_association,
-        back_populates="meals"
+        back_populates="meal"
     )
 
 
