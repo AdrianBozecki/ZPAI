@@ -55,7 +55,7 @@ class UsersRepository(UsersRepositoryInterface):
         )
 
     async def login_user(self, email: str, password: str) -> UserEntity | None:
-        query = select(User, UserDetails).join(UserDetails).where(User.email == email)
+        query = select(User).where(User.email == email)
         result = await self.db.execute(query)
         user_result = result.first()
 
