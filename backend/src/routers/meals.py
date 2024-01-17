@@ -14,6 +14,7 @@ meals_router = APIRouter()
 async def get_db() -> AsyncSession:
     async with AsyncSessionLocal() as session:
         yield session
+        await session.close()
 
 
 @cbv(meals_router)

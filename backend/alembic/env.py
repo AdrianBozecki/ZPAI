@@ -6,6 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from database import Base
+from main_fastapi import app
 from repositories.meals.models import Meal, User, Like, UserDetails
 
 # this is the Alembic Config object, which provides
@@ -79,3 +80,4 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+
