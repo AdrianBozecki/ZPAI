@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 class BaseMealEntity(BaseModel):
     name: str
-    description: str
+    description: str | None = None
     price: D
     user_id: int
 

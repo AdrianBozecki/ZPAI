@@ -24,7 +24,7 @@ class MealsCBV:
         self.repo = MealsRepository(db)
 
     @meals_router.get(
-        f"{MEALS_BASE_URL}/",
+        f"{MEALS_BASE_URL}",
         summary="List meals",
         response_description="Meals objects",
         status_code=status.HTTP_200_OK,
