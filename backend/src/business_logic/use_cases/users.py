@@ -1,4 +1,4 @@
-from business_logic.entities.users import CreateUserEntity, UserEntity
+from business_logic.entities.users import CreateUserEntity, UserEntity, UserLoginEntity
 from business_logic.interfaces.users import UsersRepositoryInterface
 
 
@@ -15,8 +15,8 @@ class GetUserUseCase:
     def __init__(self, repo: UsersRepositoryInterface):
         self.repo = repo
 
-    async def execute(self, user_id: int) -> UserEntity:
-        meals = await self.repo.get_user(user_id)
+    async def execute(self, user_email: str) -> UserEntity:
+        meals = await self.repo.get_user(user_email)
         return meals
 
 
@@ -24,6 +24,6 @@ class LoginUserUseCase:
     def __init__(self, repo: UsersRepositoryInterface):
         self.repo = repo
 
-    async def execute(self, email: str, password: str) -> UserEntity | None:
+    async def execute(self, email: str, password: str) -> UserLoginEntity:
         meals = await self.repo.login_user(email, password)
         return meals

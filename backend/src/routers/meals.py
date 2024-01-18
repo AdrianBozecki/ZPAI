@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import APIRouter, Depends
 from fastapi_restful.cbv import cbv
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -5,16 +7,12 @@ from starlette import status
 
 from business_logic.entities.meals import MealEntity
 from business_logic.use_cases.meals import ListMealsUseCase
-from database import AsyncSessionLocal
+from database import get_db
 from repositories.meals.repository import MealsRepository
 
 meals_router = APIRouter()
 
 
-async def get_db() -> AsyncSession:
-    async with AsyncSessionLocal() as session:
-        yield session
-        await session.close()
 
 
 @cbv(meals_router)
