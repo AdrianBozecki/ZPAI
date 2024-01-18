@@ -4,6 +4,7 @@ from sqlalchemy import select
 
 from business_logic.entities.users import CreateUserEntity, UserEntity, UserLoginEntity
 from business_logic.interfaces.users import UsersRepositoryInterface
+from consts import BEARER
 from database import AsyncSessionLocal
 from helpers import create_access_token
 from repositories.meals.models import User, UserDetails
@@ -70,5 +71,5 @@ class UsersRepository(UsersRepositoryInterface):
 
         return UserLoginEntity(
             access_token=access_token,
-            token_type="bearer",
+            token_type=BEARER,
         )

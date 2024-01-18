@@ -1,5 +1,3 @@
-from contextlib import asynccontextmanager
-
 from fastapi import APIRouter, Depends
 from fastapi_restful.cbv import cbv
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,8 +9,6 @@ from database import get_db
 from repositories.meals.repository import MealsRepository
 
 meals_router = APIRouter()
-
-
 
 
 @cbv(meals_router)

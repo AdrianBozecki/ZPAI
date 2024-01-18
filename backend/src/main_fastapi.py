@@ -1,17 +1,15 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt, JWTError
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.middleware.base import RequestResponseEndpoint
 from starlette.requests import Request
+from starlette.responses import JSONResponse, Response
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 from business_logic.use_cases.users import GetUserUseCase
 from database import Base, engine, get_db_for_middleware
-from repositories.meals.models import User
 from repositories.users.repository import UsersRepository
 from routers.meals import meals_router
-from routers.test_router import first_router
 from routers.users import users_router
 from settings import settings
 
@@ -25,7 +23,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(first_router, tags=["test"])
 app.include_router(meals_router, tags=["meals"])
 app.include_router(users_router, tags=["users"])
 
@@ -37,11 +34,14 @@ async def startup_event() -> None:
 
 
 @app.middleware("http")
-async def jwt_middleware(request: Request, call_next):
+async def jwt_middleware(
+    request: Request,
+    call_next: RequestResponseEndpoint,
+) -> JSONResponse | Response:
     request.state.user = None
-    token = request.headers.get('authorization')
+    token = request.headers.get("authorization")
 
-    if request.url.path not in ['/users/login/', '/users/']:
+    if request.url.path not in ["/users/login/", "/users/"]:
         if token is not None:
             token = token.split(" ")[1]
             try:
@@ -61,7 +61,10 @@ async def jwt_middleware(request: Request, call_next):
             except JWTError:
                 raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid token")
         else:
-            raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Missing authorization header")
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED,
+                detail="Missing authorization header",
+            )
 
     response = await call_next(request)
     return response

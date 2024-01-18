@@ -12,13 +12,16 @@ engine.execution_options(isolation_level="AUTOCOMMIT")
 
 AsyncSessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)  # type: ignore
 
+
 async def get_db() -> AsyncSession:
     async with AsyncSessionLocal() as session:
         yield session
+
 
 @asynccontextmanager
 async def get_db_for_middleware() -> AsyncSession:
     async with AsyncSessionLocal() as session:
         yield session
+
 
 Base = declarative_base()
