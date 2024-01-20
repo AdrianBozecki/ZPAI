@@ -49,21 +49,22 @@ async def jwt_middleware(
                 email: str = payload.get("sub")
 
                 if email is None:
-                    raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid token")
+                    return JSONResponse(status_code=HTTP_401_UNAUTHORIZED, content={"detail": "Invalid token"})
 
                 async with get_db_for_middleware() as db:
                     user_repo = UsersRepository(db)
                     use_case = GetUserUseCase(user_repo)
                     user = await use_case.execute(email)
 
+
                 request.state.user = user
 
             except JWTError:
-                raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid token")
+                return JSONResponse(status_code=HTTP_401_UNAUTHORIZED, content={"detail": "Invalid token"})
         else:
-            raise HTTPException(
+            return JSONResponse(
                 status_code=HTTP_401_UNAUTHORIZED,
-                detail="Missing authorization header",
+                content={"detail": "Missing authorization header"},
             )
 
     response = await call_next(request)

@@ -47,6 +47,9 @@ class UsersRepository(UsersRepositoryInterface):
         query = select(User, UserDetails).join(UserDetails).where(User.email == user_email)
         user_row, user_details_row = (await self.db.execute(query)).first()
 
+        if user_row is None:
+            raise HTTPException(status_code=401, detail="User not found")
+
         return UserEntity(
             id=user_row.id,
             email=user_row.email,
