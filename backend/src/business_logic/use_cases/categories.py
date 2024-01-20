@@ -10,6 +10,7 @@ class CreateCategoryUseCase:
         result = await self.category_repo.create_category(category)
         return CategoryEntity.model_validate(result)
 
+
 class ListCategoriesUseCase:
     def __init__(self, category_repo: CategoryRepository):
         self.category_repo = category_repo

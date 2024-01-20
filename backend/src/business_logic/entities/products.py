@@ -7,8 +7,10 @@ class BaseProductEntity(BaseModel):
     name: str
     unit_of_measure: UnitOfMeasureEnum | None = None
 
+
 class CreateProductEntity(BaseProductEntity):
     pass
+
 
 class ProductEntity(BaseProductEntity):
     id: int  # noqa: A003

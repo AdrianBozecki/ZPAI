@@ -1,26 +1,29 @@
-import logging
-
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
 
-from business_logic.entities.meals import CreateMealEntity, MealEntity
+from business_logic.entities.meals import CreateMealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
 from database import AsyncSessionLocal
+from repositories.meals.models import (
+    Category,
+    Meal,
+    meal_category_association,
+    meal_product_association,
+)
 
-from repositories.meals.models import Meal, meal_product_association, meal_category_association
-
-logger = logging.getLogger("foo-logger")
 
 class MealsRepository(MealsRepositoryInterface):
     def __init__(self, db: AsyncSessionLocal):
         self.db = db
 
-    async def list_meals(self) -> list[Meal]:
-        result = await self.db.execute(
-            select(Meal)
-            .options(joinedload(Meal.products))
-            .options(joinedload(Meal.category))
-        )
+    async def list_meals(self, category_id: int | None) -> list[Meal]:
+        query = select(Meal)
+        if category_id is not None:
+            query = query.join(Meal.category).filter(Category.id == category_id)
+        query = query.options(joinedload(Meal.products), joinedload(Meal.category))
+
+        result = await self.db.execute(query)
+
         meals = result.unique().scalars().all()
         return meals
 
@@ -30,7 +33,7 @@ class MealsRepository(MealsRepositoryInterface):
             description=meal.description,
             user_id=meal.user_id,
             likes_count=meal.likes_count,
-            preparation=meal.preparation
+            preparation=meal.preparation,
         )
 
         self.db.add(new_meal)
@@ -39,14 +42,14 @@ class MealsRepository(MealsRepositoryInterface):
         for product_id in meal.product_ids:
             association = meal_product_association.insert().values(
                 meal_id=new_meal.id,
-                product_id=product_id
+                product_id=product_id,
             )
             await self.db.execute(association)
 
         for category_id in meal.category_ids:
             association = meal_category_association.insert().values(
                 meal_id=new_meal.id,
-                category_id=category_id
+                category_id=category_id,
             )
             await self.db.execute(association)
 
@@ -57,6 +60,6 @@ class MealsRepository(MealsRepositoryInterface):
             select(Meal)
             .options(joinedload(Meal.products))
             .options(joinedload(Meal.category))
-            .filter(Meal.id == new_meal.id)
+            .filter(Meal.id == new_meal.id),
         )
         return refreshed_meal.unique().scalars().one()

@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
-from business_logic.entities.categories import CategoryEntity, CreateCategoryEntity
-from business_logic.entities.products import CreateProductEntity, ProductEntity
+from business_logic.entities.products import CreateProductEntity
 from repositories.meals.models import Product
 
 

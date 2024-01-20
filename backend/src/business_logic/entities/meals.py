@@ -1,4 +1,4 @@
-
+from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
@@ -26,7 +26,7 @@ class MealEntity(BaseMealEntity):
         from_attributes = True
 
     @classmethod
-    def from_orm(cls, meal: Meal):
+    def from_orm(cls, meal: Meal) -> MealEntity:
         return cls(
             id=meal.id,
             name=meal.name,
@@ -34,5 +34,5 @@ class MealEntity(BaseMealEntity):
             user_id=meal.user_id,
             likes_count=meal.likes_count,
             product_ids=[product.id for product in meal.products],
-            category_ids=[category.id for category in meal.category]
+            category_ids=[category.id for category in meal.category],
         )

@@ -6,7 +6,7 @@ from repositories.meals.models import Meal
 
 class MealsRepositoryInterface(ABC):
     @abstractmethod
-    async def list_meals(self) -> list[Meal]:
+    async def list_meals(self, category_id: int | None) -> list[Meal]:
         pass
 
     @abstractmethod

@@ -1,47 +1,43 @@
-from sqlalchemy import Enum, ForeignKey, Integer, String, Table, Column
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 from enums import LikeDislikeEnum, UnitOfMeasureEnum
 
 meal_category_association = Table(
-    'meal_category_association',
+    "meal_category_association",
     Base.metadata,
-    Column('meal_id', Integer, ForeignKey('meal.id')),
-    Column('category_id', Integer, ForeignKey('category.id'))
+    Column("meal_id", Integer, ForeignKey("meal.id")),
+    Column("category_id", Integer, ForeignKey("category.id")),
 )
+
 
 class Category(Base):
     __tablename__ = "category"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)  # noqa: A003
     name: Mapped[str] = mapped_column(String, unique=True)
 
-    meals = relationship(
-        "Meal",
-        secondary=meal_category_association,
-        back_populates="category"
-    )
+    meals = relationship("Meal", secondary=meal_category_association, back_populates="category")
+
 
 meal_product_association = Table(
-    'meal_product_association',
+    "meal_product_association",
     Base.metadata,
-    Column('meal_id', Integer, ForeignKey('meal.id')),
-    Column('product_id', Integer, ForeignKey('product.id'))
+    Column("meal_id", Integer, ForeignKey("meal.id")),
+    Column("product_id", Integer, ForeignKey("product.id")),
 )
+
 
 class Product(Base):
     __tablename__ = "product"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)  # noqa: A003
     name: Mapped[str] = mapped_column(String, unique=True)
     unit_of_measure: Mapped[str] = mapped_column(Enum(UnitOfMeasureEnum))
 
-    meals = relationship(
-        "Meal",
-        secondary=meal_product_association,
-        back_populates="products"
-    )
+    meals = relationship("Meal", secondary=meal_product_association, back_populates="products")
+
 
 class Meal(Base):
     __tablename__ = "meal"
@@ -55,16 +51,8 @@ class Meal(Base):
 
     likes: Mapped[list["Like"]] = relationship("Like", back_populates="meal")
     user = relationship("User", back_populates="meals")
-    category = relationship(
-        "Category",
-        secondary=meal_category_association,
-        back_populates="meals"
-    )
-    products = relationship(
-        "Product",
-        secondary=meal_product_association,
-        back_populates="meals"
-    )
+    category = relationship("Category", secondary=meal_category_association, back_populates="meals")
+    products = relationship("Product", secondary=meal_product_association, back_populates="meals")
 
 
 class Like(Base):

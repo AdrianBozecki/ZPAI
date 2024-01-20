@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from business_logic.entities.categories import CreateCategoryEntity, CategoryEntity
+from business_logic.entities.categories import CreateCategoryEntity
 from business_logic.interfaces.categories import CategoryRepositoryInterface
 from database import AsyncSessionLocal
 from repositories.meals.models import Category
