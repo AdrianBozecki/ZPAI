@@ -1,18 +1,20 @@
-from decimal import Decimal as D
-from typing import Annotated
+
 
 from pydantic import BaseModel, Field
+
 
 
 class BaseMealEntity(BaseModel):
     name: str
     description: str | None = None
-    price: D
+    ingredients: list[str] = Field(default_factory=list)
+    preparation: str | None = None
     user_id: int
+    likes_count: int = 0
 
 
-class MealCreateEntity(BaseMealEntity):
-    price: Annotated[D, Field(ge=0, decimal_places=2)]
+class CreateMealEntity(BaseMealEntity):
+    pass
 
 
 class MealEntity(BaseMealEntity):

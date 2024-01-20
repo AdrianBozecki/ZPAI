@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 from fastapi_restful.cbv import cbv
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from business_logic.entities.meals import MealEntity
-from business_logic.use_cases.meals import ListMealsUseCase
+from business_logic.entities.meals import MealEntity, CreateMealEntity
+from business_logic.use_cases.meals import ListMealsUseCase, CreateMealUseCase
 from database import get_db
 from repositories.meals.repository import MealsRepository
 
@@ -29,3 +29,17 @@ class MealsCBV:
         use_case = ListMealsUseCase(self.repo)
         meals = await use_case.execute()
         return meals
+
+    @meals_router.post(
+        f"{MEALS_BASE_URL}",
+        summary="Create meal",
+        response_description="Meal object",
+        status_code=status.HTTP_201_CREATED,
+        response_model=MealEntity,
+    )
+    async def create_meal(
+            self,
+            meal: CreateMealEntity = Body(..., description="Data for meal creation"),
+    ) -> MealEntity:
+        use_case = CreateMealUseCase(self.repo)
+        return await use_case.execute(meal)

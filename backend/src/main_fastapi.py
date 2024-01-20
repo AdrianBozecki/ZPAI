@@ -9,7 +9,9 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 from business_logic.use_cases.users import GetUserUseCase
 from database import Base, engine, get_db_for_middleware
 from repositories.users.repository import UsersRepository
+from routers.categories import categories_router
 from routers.meals import meals_router
+from routers.products import products_router
 from routers.users import users_router
 from settings import settings
 
@@ -25,6 +27,8 @@ app.add_middleware(
 
 app.include_router(meals_router, tags=["meals"])
 app.include_router(users_router, tags=["users"])
+app.include_router(categories_router, tags=["categories"])
+app.include_router(products_router, tags=["products"])
 
 
 @app.on_event("startup")
