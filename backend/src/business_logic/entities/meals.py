@@ -9,6 +9,7 @@ class BaseMealEntity(BaseModel):
     name: str
     description: str | None = None
     product_ids: list[int] = Field(default_factory=list)
+    category_ids: list[int] = Field(default_factory=list)
     preparation: str | None = None
     user_id: int
     likes_count: int = 0
@@ -32,5 +33,6 @@ class MealEntity(BaseMealEntity):
             description=meal.description,
             user_id=meal.user_id,
             likes_count=meal.likes_count,
-            product_ids=[product.id for product in meal.products]
+            product_ids=[product.id for product in meal.products],
+            category_ids=[category.id for category in meal.category]
         )

@@ -19,4 +19,4 @@ class CreateMealUseCase:
 
     async def execute(self, meal: CreateMealEntity) -> MealEntity:
         result = await self.repo.create_meal(meal)
-        return MealEntity.model_validate(result)
+        return MealEntity.from_orm(result)

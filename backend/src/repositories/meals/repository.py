@@ -7,8 +7,7 @@ from business_logic.entities.meals import CreateMealEntity, MealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
 from database import AsyncSessionLocal
 
-from repositories.meals.models import Meal, meal_product_association
-
+from repositories.meals.models import Meal, meal_product_association, meal_category_association
 
 logger = logging.getLogger("foo-logger")
 
@@ -17,7 +16,11 @@ class MealsRepository(MealsRepositoryInterface):
         self.db = db
 
     async def list_meals(self) -> list[Meal]:
-        result = await self.db.execute(select(Meal).options(joinedload(Meal.products)))
+        result = await self.db.execute(
+            select(Meal)
+            .options(joinedload(Meal.products))
+            .options(joinedload(Meal.category))
+        )
         meals = result.unique().scalars().all()
         return meals
 
@@ -40,6 +43,20 @@ class MealsRepository(MealsRepositoryInterface):
             )
             await self.db.execute(association)
 
+        for category_id in meal.category_ids:
+            association = meal_category_association.insert().values(
+                meal_id=new_meal.id,
+                category_id=category_id
+            )
+            await self.db.execute(association)
+
         await self.db.commit()
+
         await self.db.refresh(new_meal)
-        return new_meal
+        refreshed_meal = await self.db.execute(
+            select(Meal)
+            .options(joinedload(Meal.products))
+            .options(joinedload(Meal.category))
+            .filter(Meal.id == new_meal.id)
+        )
+        return refreshed_meal.unique().scalars().one()
