@@ -2,12 +2,13 @@
 
 from pydantic import BaseModel, Field
 
+from repositories.meals.models import Meal
 
 
 class BaseMealEntity(BaseModel):
     name: str
     description: str | None = None
-    ingredients: list[str] = Field(default_factory=list)
+    product_ids: list[int] = Field(default_factory=list)
     preparation: str | None = None
     user_id: int
     likes_count: int = 0
@@ -22,3 +23,14 @@ class MealEntity(BaseMealEntity):
 
     class Config:
         from_attributes = True
+
+    @classmethod
+    def from_orm(cls, meal: Meal):
+        return cls(
+            id=meal.id,
+            name=meal.name,
+            description=meal.description,
+            user_id=meal.user_id,
+            likes_count=meal.likes_count,
+            product_ids=[product.id for product in meal.products]
+        )

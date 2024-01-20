@@ -10,7 +10,7 @@ class ListMealsUseCase:
 
     async def execute(self) -> List[MealEntity]:
         meals = await self.repo.list_meals()
-        return [MealEntity.model_validate(meal) for meal in meals]
+        return [MealEntity.from_orm(meal) for meal in meals]
 
 
 class CreateMealUseCase:

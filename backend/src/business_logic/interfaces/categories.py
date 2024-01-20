@@ -7,3 +7,7 @@ class CategoryRepositoryInterface(ABC):
     @abstractmethod
     async def create_category(self, category: CreateCategoryEntity) -> CategoryEntity:
         pass
+
+    @abstractmethod
+    async def list_categories(self) -> list[CategoryEntity]:
+        pass

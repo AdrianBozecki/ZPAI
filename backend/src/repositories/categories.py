@@ -1,3 +1,5 @@
+from sqlalchemy import select
+
 from business_logic.entities.categories import CreateCategoryEntity, CategoryEntity
 from business_logic.interfaces.categories import CategoryRepositoryInterface
 from database import AsyncSessionLocal
@@ -14,3 +16,7 @@ class CategoryRepository(CategoryRepositoryInterface):
         await self.db.commit()
         await self.db.refresh(category)
         return category
+
+    async def list_categories(self) -> list[Category]:
+        results = await self.db.execute(select(Category))
+        return results.scalars().all()

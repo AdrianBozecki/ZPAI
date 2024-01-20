@@ -5,7 +5,7 @@ from starlette import status
 
 from business_logic.entities.categories import CategoryEntity, CreateCategoryEntity
 from business_logic.entities.meals import MealEntity, CreateMealEntity
-from business_logic.use_cases.categories import CreateCategoryUseCase
+from business_logic.use_cases.categories import CreateCategoryUseCase, ListCategoriesUseCase
 from business_logic.use_cases.meals import ListMealsUseCase, CreateMealUseCase
 from database import get_db
 from repositories.categories import CategoryRepository
@@ -36,3 +36,14 @@ class CategoriesCBV:
         use_case = CreateCategoryUseCase(self.repo)
         return await use_case.execute(category)
 
+
+    @categories_router.get(
+        f"{CATEGORIES_BASE_URL}",
+        summary="Get all categories",
+        response_description="List of categories",
+        status_code=status.HTTP_200_OK,
+        response_model=list[CategoryEntity],
+    )
+    async def list_categories(self) -> list[CategoryEntity]:
+        use_case = ListCategoriesUseCase(self.repo)
+        return await use_case.execute()

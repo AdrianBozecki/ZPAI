@@ -1,22 +1,45 @@
-from sqlalchemy.future import select
+import logging
 
-from business_logic.entities.meals import CreateMealEntity
+from sqlalchemy.future import select
+from sqlalchemy.orm import joinedload
+
+from business_logic.entities.meals import CreateMealEntity, MealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
 from database import AsyncSessionLocal
-from repositories.meals.models import Meal
 
+from repositories.meals.models import Meal, meal_product_association
+
+
+logger = logging.getLogger("foo-logger")
 
 class MealsRepository(MealsRepositoryInterface):
     def __init__(self, db: AsyncSessionLocal):
         self.db = db
 
     async def list_meals(self) -> list[Meal]:
-        result = await self.db.execute(select(Meal))
-        return result.scalars().all()
+        result = await self.db.execute(select(Meal).options(joinedload(Meal.products)))
+        meals = result.unique().scalars().all()
+        return meals
 
     async def create_meal(self, meal: CreateMealEntity) -> Meal:
-        meal = Meal(**meal.model_dump())
-        self.db.add(meal)
+        new_meal = Meal(
+            name=meal.name,
+            description=meal.description,
+            user_id=meal.user_id,
+            likes_count=meal.likes_count,
+            preparation=meal.preparation
+        )
+
+        self.db.add(new_meal)
+        await self.db.flush()
+
+        for product_id in meal.product_ids:
+            association = meal_product_association.insert().values(
+                meal_id=new_meal.id,
+                product_id=product_id
+            )
+            await self.db.execute(association)
+
         await self.db.commit()
-        await self.db.refresh(meal)
-        return meal
+        await self.db.refresh(new_meal)
+        return new_meal

@@ -1,3 +1,6 @@
+import logging
+from logging.config import dictConfig
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt, JWTError
@@ -15,7 +18,9 @@ from routers.products import products_router
 from routers.users import users_router
 from settings import settings
 
-app = FastAPI()
+dictConfig(settings.LOG_CONFIG)
+
+app = FastAPI(debug=True)
 
 app.add_middleware(
     CORSMiddleware,
