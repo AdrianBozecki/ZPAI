@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from business_logic.entities.categories import CreateCategoryEntity
-from repositories.meals.models import Category
+from repositories.models import Category
 
 
 class CategoryRepositoryInterface(ABC):

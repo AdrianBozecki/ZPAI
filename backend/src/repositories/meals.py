@@ -4,7 +4,7 @@ from sqlalchemy.orm import joinedload
 from business_logic.entities.meals import CreateMealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
 from database import AsyncSessionLocal
-from repositories.meals.models import (
+from repositories.models import (
     Category,
     Meal,
     meal_category_association,

@@ -11,7 +11,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 
 from business_logic.use_cases.users import GetUserUseCase
 from database import Base, engine, get_db_for_middleware
-from repositories.users.repository import UsersRepository
+from repositories.users import UsersRepository
 from routers.categories import categories_router
 from routers.meals import meals_router
 from routers.products import products_router

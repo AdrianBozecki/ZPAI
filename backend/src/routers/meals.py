@@ -6,7 +6,7 @@ from starlette import status
 from business_logic.entities.meals import CreateMealEntity, MealEntity
 from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase
 from database import get_db
-from repositories.meals.repository import MealsRepository
+from repositories.meals import MealsRepository
 
 meals_router = APIRouter()
 

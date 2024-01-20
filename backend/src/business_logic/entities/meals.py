@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from repositories.meals.models import Meal
+from repositories.models import Meal
 
 
 class BaseMealEntity(BaseModel):

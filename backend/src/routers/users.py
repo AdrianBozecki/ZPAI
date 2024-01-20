@@ -6,7 +6,7 @@ from starlette import status
 from business_logic.entities.users import CreateUserEntity, UserEntity, UserLoginEntity
 from business_logic.use_cases.users import CreateUserUseCase, LoginUserUseCase
 from database import get_db
-from repositories.users.repository import UsersRepository
+from repositories.users import UsersRepository
 
 users_router = APIRouter()
 

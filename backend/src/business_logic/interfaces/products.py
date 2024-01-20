@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from business_logic.entities.products import CreateProductEntity
-from repositories.meals.models import Product
+from repositories.models import Product
 
 
 class ProductsRepositoryInterface(ABC):

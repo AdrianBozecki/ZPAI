@@ -1,7 +1,7 @@
 from business_logic.entities.products import CreateProductEntity
 from business_logic.interfaces.products import ProductsRepositoryInterface
 from database import AsyncSessionLocal
-from repositories.meals.models import Product
+from repositories.models import Product
 
 
 class ProductsRepository(ProductsRepositoryInterface):
