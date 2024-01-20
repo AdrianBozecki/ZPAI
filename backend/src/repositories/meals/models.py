@@ -19,7 +19,6 @@ class Meal(Base):
     creator = relationship("User", back_populates="meal")
 
 
-
 class Like(Base):
     __tablename__ = "like"
 
