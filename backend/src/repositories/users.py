@@ -7,7 +7,7 @@ from business_logic.interfaces.users import UsersRepositoryInterface
 from consts import BEARER
 from database import AsyncSessionLocal
 from helpers import create_access_token
-from repositories.meals.models import User, UserDetails
+from repositories.models import User, UserDetails
 
 
 class UsersRepository(UsersRepositoryInterface):
