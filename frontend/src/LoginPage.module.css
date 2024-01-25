@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(to bottom, #f2994a, #f2c94c); /* Gradient tła */
+}
+
+.title {
+  color: white;
+  font-size: 72px;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  text-align: left;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.button,
+.linkButton {
+  width: calc(100% - 1.6rem); /* Odejmujemy padding, aby szerokość była równa szerokości inputów */
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  background-color: #4e9f3d;
+  text-transform: uppercase;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold; /* Pogrubienie tekstu */
+}
+
+.button:hover,
+.linkButton:hover {
+  background-color: #367a2b;
+}
+
+.linkButton {
+  background-color: transparent;
+  margin-top: 0;
+  padding: 0.7rem;
+  box-shadow: none;
+  color: #4e9f3d;
+  border: 2px solid #4e9f3d;
+}
+
+.linkButton:hover {
+  color: white;
+  background-color: #4e9f3d;
+}
+
+/* Dodajemy specyficzne style dla wyśrodkowania tekstu nad przyciskiem */
+.linkContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+
+@media only screen and (max-width: 414px) {
+  .title {
+    font-size: 48px; /* Mniejszy rozmiar dla lepszej czytelności */
+    margin-bottom: 1rem; /* Mniejszy margines dla lepszego wykorzystania przestrzeni */
+  }
+
+  .form {
+    width: 70%; /* Pełniejsze wykorzystanie dostępnej szerokości */
+    padding: 1rem; /* Mniejszy padding dla lepszego wykorzystania przestrzeni */
+  }
+
+  .label {
+    font-size: 14px; /* Mniejszy rozmiar fontu dla etykiet */
+  }
+
+  .input {
+    padding: 0.6rem; /* Mniejszy padding dla pól tekstowych */
+  }
+
+  .button,
+  .linkButton {
+    padding: 0.6rem; /* Mniejszy padding dla przycisków */
+    font-size: 14px; /* Mniejszy rozmiar fontu dla przycisków */
+  }
+
+  .linkButton {
+    padding: 0.3rem 0.6rem; /* Mniejszy padding dla linku/przycisku rejestracji */
+  }
+}
