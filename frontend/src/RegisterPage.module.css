@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: linear-gradient(to bottom, #f2994a, #f2c94c); /* Gradient tła */
+  }
+  
+  .title {
+    color: white;
+    font-size: 92px; /* Możesz dostosować rozmiar dla tej strony */
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-align: center; /* Wycentrowanie tytułu */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .subtitle {
+    color: white;
+  }
+  
+  .form {
+    width: 100%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5rem;
+  }
+  
+  .label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .button {
+    width: calc(100% - 1.6rem); /* Odejmujemy padding, aby szerokość była równa szerokości inputów */
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: #4e9f3d;
+    text-transform: uppercase;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold; /* Pogrubienie tekstu */
+  }
+  
+  .button:hover {
+    background-color: #367a2b;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%;
+  }
+  
+  @media only screen and (max-width: 414px) {
+    .title {
+      font-size: 72px;
+      margin-bottom: 5rem;
+    }
+  
+    .form {
+      width: 80%;
+      padding: 1rem;
+    }
+  
+    .label {
+      font-size: 14px;
+    }
+  
+    .input {
+      padding: 0.6rem;
+    }
+  
+    .button {
+      padding: 0.6rem;
+      font-size: 14px;
+    }
+  }
+  
