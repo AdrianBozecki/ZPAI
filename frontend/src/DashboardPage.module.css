@@ -55,10 +55,17 @@
   }
   
   .navButton {
-    background: none;
-    border: none;
-    margin: 10px 0;
-    cursor: pointer;
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Dark grey text color */
+    padding: 10px 15px; /* Padding around the text */
+    margin-bottom: 8px; /* Space between buttons */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Button occupies the full width of its parent */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    cursor: pointer; /* Cursor indicates button */
+    transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
   }
   
   .content {
@@ -81,7 +88,7 @@
     height: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     font-weight: bold;
   }
@@ -90,7 +97,7 @@
     max-width: 90%;
     max-height: 90%; 
     display: flex;
-    margin-bottom: 30px;
+    margin-bottom: 8px;
   }
   
   @media (max-width: 768px) {

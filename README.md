@@ -45,6 +45,50 @@ Następnie, uruchom aplikację:
 npm start
 ```
 
+## ERD Diagram
+![Screenshot 2024-01-28 at 18.42.54.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2018.42.54.png)
+
+## Screenshots of application
+## Desktop view:
+
+Sign in page:
+![Screenshot 2024-01-28 at 19.19.38.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.19.38.png)
+
+Sign up page:
+![Screenshot 2024-01-28 at 19.19.44.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.19.44.png)
+
+Main view:
+![Screenshot 2024-01-28 at 19.19.53.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.19.53.png)
+
+Detail view:
+![Screenshot 2024-01-28 at 19.20.02.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.02.png)
+![Screenshot 2024-01-28 at 19.20.14.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.14.png)
+
+Add Meal view:
+![Screenshot 2024-01-28 at 19.20.23.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.23.png)
+
+
+## Mobile view:
+
+Sign in page:
+
+![Screenshot 2024-01-28 at 19.20.34.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.34.png)
+
+Sign up page:
+
+![Screenshot 2024-01-28 at 19.20.39.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.39.png)
+
+Main view:
+
+![Screenshot 2024-01-28 at 19.20.53.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.53.png)
+
+Detail view:
+
+![Screenshot 2024-01-28 at 19.21.02.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.21.02.png)
+
+Add Meal view:
+
+![Screenshot 2024-01-28 at 19.21.09.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.21.09.png)
 
 ## Autor
 

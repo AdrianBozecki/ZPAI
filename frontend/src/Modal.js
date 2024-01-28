@@ -66,11 +66,11 @@ function Modal({ meal, onClose, categories, products, onMealsRefresh}) {
         <div className={styles.modalContent}>
           <h2>{meal.name}</h2>
           <img src="/img/placeholder.png" alt="Meal"/>
-          <p>description: {meal.description}</p>
-          <p>categories: {categoryNames.join(', ')}</p>
-          <p>products: {productNames.join(', ')}</p>
-          <p>preparation: {meal.preparation}</p>
-          <p>created by user: {meal.user_id}</p>
+          <p><b>description:</b> {meal.description}</p>
+          <p><b>categories:</b> {categoryNames.join(', ')}</p>
+          <p><b>products:</b> {productNames.join(', ')}</p>
+          <p><b>preparation:</b> <div style={{ whiteSpace: 'pre-wrap' }}>{meal.preparation}</div></p>
+          <p><b>created by user:</b> {meal.user_id}</p>
           {localUserId === meal.user_id.toString() && (
           <button onClick={handleDelete}>Delete</button>
         )}

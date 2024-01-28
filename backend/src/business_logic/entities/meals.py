@@ -30,6 +30,7 @@ class MealEntity(BaseMealEntity):
             id=meal.id,
             name=meal.name,
             description=meal.description,
+            preparation=meal.preparation,
             user_id=meal.user_id,
             product_ids=[product.id for product in meal.products],
             category_ids=[category.id for category in meal.category],
