@@ -8,3 +8,7 @@ class ProductsRepositoryInterface(ABC):
     @abstractmethod
     async def create_product(self, product: CreateProductEntity) -> Product:
         pass
+
+    @abstractmethod
+    async def list_products(self) -> list[Product]:
+        pass
