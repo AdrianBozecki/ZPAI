@@ -43,7 +43,7 @@
   
   .sidebar {
     grid-area: sidebar;
-    background-image: linear-gradient(to bottom, #f2994a, #f2c94c);
+    background-image: linear-gradient(to bottom, #f2994a,#f2c94c);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -101,8 +101,53 @@
       width: 100%;
     }
     
-    .sidebar {
-      display: none;
-    }
   }
+  
+  @media (max-width: 414px) {
+    .dashboard {
+      grid-template-columns: 100px 1fr; /* Wąska kolumna na kategorie */
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "header header"
+        "sidebar content";
+    }
+    .header {
+        flex-direction: row; /* Przywraca domyślny układ poziomy dla nagłówka */
+        justify-content: space-between; /* Rozkłada elementy równomiernie */
+        padding: 10px; /* Zmniejsza padding dla mniejszych ekranów */
+      }
+
+    
+  .actions {
+    flex-direction: row; /* Przywraca układ wiersza dla akcji */
+    width: auto; /* Automatyczna szerokość */
+    justify-content: space-between; /* Rozkłada elementy równomiernie */
+    margin-top: 20px;
+  }
+
+  .addButton,
+  .settingsButton {
+    padding: 5px; /* Zmniejsza padding dla przycisków */
+    font-size: 14px; /* Zmniejsza rozmiar czcionki przycisków */
+  }
+
+  .search {
+    width: 60%; /* Zmniejsza szerokość pola wyszukiwania */
+    margin: 0 5px; /* Dostosowuje marginesy */
+  }
+
+  .content {
+    padding: 10px; /* Zmniejsza padding dla zawartości */
+  }
+
+  .meals {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Dostosowuje rozmiar kart posiłków */
+  }
+
+  .mealCard {
+    height: 150px; /* Zmniejsza wysokość kart posiłków */
+    padding: 10px; /* Zmniejsza padding kart posiłków */
+  }
+    
+}
   

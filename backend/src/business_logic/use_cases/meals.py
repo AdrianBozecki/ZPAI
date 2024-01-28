@@ -20,3 +20,13 @@ class CreateMealUseCase:
     async def execute(self, meal: CreateMealEntity) -> MealEntity:
         result = await self.repo.create_meal(meal)
         return MealEntity.from_orm(result)
+
+
+class DeleteMealUseCase:
+
+    def __init__(self, repo: MealsRepositoryInterface):
+        self.repo = repo
+
+    async def execute(self, meal_id: int) -> None:
+        await self.repo.delete_meal(meal_id)
+        return None

@@ -1,9 +1,11 @@
 import logging
 from logging.config import dictConfig
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Security, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
+from pydantic import BaseModel
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -35,7 +37,6 @@ app.include_router(meals_router, tags=["meals"])
 app.include_router(users_router, tags=["users"])
 app.include_router(categories_router, tags=["categories"])
 app.include_router(products_router, tags=["products"])
-
 
 @app.on_event("startup")
 async def startup_event() -> None:

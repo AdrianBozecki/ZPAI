@@ -56,6 +56,9 @@ function DashboardPage() {
     .then(data => setMeals(data))
     .catch(error => console.error('Error fetching meals', error));
   };
+  const refreshMeals = () => {
+    fetchMeals(); // funkcja, którą już masz zdefiniowaną do pobierania posiłków
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -163,11 +166,11 @@ function DashboardPage() {
       </main>
 
       {isModalOpen && selectedMeal && (
-        <Modal meal={selectedMeal} onClose={closeModal} />
+        <Modal meal={selectedMeal} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
       )}
 
       {isAddMealModalOpen && (
-        <AddMealModal onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts}/>
+        <AddMealModal onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
       )}
     </div>
   );

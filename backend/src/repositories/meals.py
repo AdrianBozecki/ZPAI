@@ -65,3 +65,12 @@ class MealsRepository(MealsRepositoryInterface):
             .filter(Meal.id == new_meal.id),
         )
         return refreshed_meal.unique().scalars().one()
+
+    async def delete_meal(self, meal_id: int) -> None:
+        result = await self.db.execute(select(Meal).where(Meal.id == meal_id))
+        meal = result.scalar_one_or_none()
+        if meal:
+            # Asynchroniczne usunięcie posiłku
+            await self.db.delete(meal)
+            await self.db.commit()
+        return None
