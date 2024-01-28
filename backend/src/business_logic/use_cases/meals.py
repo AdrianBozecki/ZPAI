@@ -8,8 +8,8 @@ class ListMealsUseCase:
     def __init__(self, repo: MealsRepositoryInterface):
         self.repo = repo
 
-    async def execute(self, category_id: int | None) -> List[MealEntity]:
-        meals = await self.repo.list_meals(category_id)
+    async def execute(self, category_id: int | None, name: str | None) -> List[MealEntity]:
+        meals = await self.repo.list_meals(category_id, name)
         return [MealEntity.from_orm(meal) for meal in meals]
 
 

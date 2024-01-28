@@ -25,9 +25,9 @@ class MealsCBV:
         status_code=status.HTTP_200_OK,
         response_model=list[MealEntity],
     )
-    async def list_meals(self, category_id: int | None = None) -> list[MealEntity]:
+    async def list_meals(self, category_id: int | None = None, name: str | None = None) -> list[MealEntity]:
         use_case = ListMealsUseCase(self.repo)
-        meals = await use_case.execute(category_id)
+        meals = await use_case.execute(category_id, name)
         return meals
 
     @meals_router.post(

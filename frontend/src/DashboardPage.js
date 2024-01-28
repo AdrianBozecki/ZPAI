@@ -12,6 +12,8 @@ function DashboardPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isAddMealModalOpen, setAddMealModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchProducts = () => {
     const token = localStorage.getItem('access_token');
@@ -29,15 +31,20 @@ function DashboardPage() {
     .catch(error => console.error('Error fetching products', error));
   };
 
-  const fetchMeals = (categoryId = null) => {
+  const fetchMeals = (categoryId = null, searchQuery = '') => {
     const token = localStorage.getItem('access_token');
     const user_id = localStorage.getItem('user_id');
     let url = 'http://localhost:8000/meals';
-
+  
+    const params = new URLSearchParams();
     if (categoryId) {
-      url += `?category_id=${categoryId}`;
+      params.append('category_id', categoryId);
     }
-
+    if (searchQuery) {
+      params.append('name', searchQuery);
+    }
+    url += `?${params.toString()}`;
+  
     fetch(url, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -50,6 +57,10 @@ function DashboardPage() {
     .catch(error => console.error('Error fetching meals', error));
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     const user_id = localStorage.getItem('user_id');
@@ -57,21 +68,33 @@ function DashboardPage() {
       alert('Unauthorized: No token provided');
       navigate('/');
     } else {
-      fetch('http://localhost:8000/categories', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'User_Id': user_id,
-        }
-      })
-      .then(response => response.json())
-      .then(data => setCategories(data))
-      .catch(error => console.error('Error fetching categories', error));
-
-      fetchMeals();
-      fetchProducts();
+      setIsLoading(true); // Aktualizacja stanu, nawet jeśli brakuje tokena
+      Promise.all([
+        fetch('http://localhost:8000/categories', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'User_Id': user_id,
+          }
+        }).then(response => response.json()),
+        fetchMeals(),
+        fetchProducts()
+      ]).then(([categoriesData]) => {
+        setCategories(categoriesData)
+      }).catch(error => {
+        console.error('Error fetching data', error);
+        setIsLoading(false); // Aktualizacja stanu również w przypadku błędu
+      });
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      fetchMeals(null, searchQuery);
+    }, 500);
+  
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
 
   const handleMealClick = (meal) => {
     setSelectedMeal(meal);
@@ -90,14 +113,31 @@ function DashboardPage() {
     setAddMealModalOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.clear(); // Czyści cały localStorage
+    navigate('/'); // Przekierowuje na stronę główną
+  };
+
+
+  if (!isLoading) {
+    return <div>Loading...</div>; // Wyświetlenie informacji o ładowaniu, gdy dane są jeszcze pobierane
+  }
+
   return (
     <div className={styles.dashboard}>
+        
       <header className={styles.header}>
         <h1>MealFuel</h1>
         <div className={styles.actions}>
           <button className={styles.addButton} onClick={openAddMealModal}>+ add</button>
-          <input className={styles.search} placeholder="search meal" />
-          <button className={styles.settingsButton}>logout</button>
+          <input
+  className={styles.search}
+  placeholder="search meal"
+  value={searchQuery}
+  onChange={handleSearchChange}
+/>
+<button className={styles.settingsButton} onClick={handleLogout}>logout</button>
+
         </div>
       </header>
 

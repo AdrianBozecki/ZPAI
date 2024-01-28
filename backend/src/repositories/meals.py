@@ -16,10 +16,12 @@ class MealsRepository(MealsRepositoryInterface):
     def __init__(self, db: AsyncSessionLocal):
         self.db = db
 
-    async def list_meals(self, category_id: int | None) -> list[Meal]:
+    async def list_meals(self, category_id: int | None, name: str | None) -> list[Meal]:
         query = select(Meal)
         if category_id is not None:
             query = query.join(Meal.category).filter(Category.id == category_id)
+        if name is not None:
+            query = query.filter(Meal.name.ilike(f'%{name}%'))
         query = query.options(joinedload(Meal.products), joinedload(Meal.category))
 
         result = await self.db.execute(query)

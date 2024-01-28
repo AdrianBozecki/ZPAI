@@ -34,6 +34,7 @@ function LoginPage() {
 
         navigate('/dashboard');
       } else {
+        alert('Login failed: Incorrect email or password.');
         console.error('Login failed:', data.error);
       }
     } catch (error) {
