@@ -20,3 +20,4 @@ class UserEntity(BaseUserEntity):
 class UserLoginEntity(BaseModel):
     access_token: str
     token_type: str
+    user_id: int

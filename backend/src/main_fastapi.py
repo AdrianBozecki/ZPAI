@@ -48,9 +48,12 @@ async def jwt_middleware(
     request: Request,
     call_next: RequestResponseEndpoint,
 ) -> JSONResponse | Response:
+    if request.method == "OPTIONS":
+        return await call_next(request)
+
     request.state.user = None
     token = request.headers.get("authorization")
-
+    logger.debug(request.headers)
     if request.url.path not in ["/users/login/", "/users/", "/docs", "/openapi.json"]:
         if token is not None:
             token = token.split(" ")[1]
@@ -68,6 +71,12 @@ async def jwt_middleware(
                     user_repo = UsersRepository(db)
                     use_case = GetUserUseCase(user_repo)
                     user = await use_case.execute(email)
+
+                    if user.id != int(request.headers.get("user_id")):
+                        return JSONResponse(
+                            status_code=HTTP_401_UNAUTHORIZED,
+                            content={"detail": request.headers.get("user_id")},
+                        )
 
                 request.state.user = user
 

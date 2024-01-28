@@ -28,9 +28,9 @@ function LoginPage() {
       const data = await response.json();
   
       if (response.ok) {
-        console.log(response.status)
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('token_type', data.token_type);
+        localStorage.setItem('user_id', data.user_id);
 
         navigate('/dashboard');
       } else {

@@ -1,19 +1,25 @@
 .dashboard {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 60px 1fr;
     height: 100vh;
+    grid-template-areas:
+      "header header"
+      "sidebar content";
   }
   
   .header {
+    grid-area: header;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #f2994a; /* Or any color you prefer */
+    background-color: white;
   }
   
   .actions {
     display: flex;
+    width: 80%;
   }
   
   .addButton,
@@ -21,7 +27,7 @@
     margin: 0 10px;
     padding: 10px;
     border: none;
-    background-color: #4e9f3d; /* Green color for buttons */
+    background-color: #4e9f3d;
     color: white;
     border-radius: 5px;
     cursor: pointer;
@@ -29,14 +35,18 @@
   
   .search {
     padding: 10px;
-    margin: 0 10px;
+    margin: -5px 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    width:75%;
   }
   
   .sidebar {
-    background-color: #f2c94c; /* Or any color you prefer */
+    grid-area: sidebar;
+    background-image: linear-gradient(to bottom, #f2994a, #f2c94c);
     padding: 20px;
+    display: flex;
+    flex-direction: column;
   }
   
   .nav {
@@ -52,9 +62,10 @@
   }
   
   .content {
-    flex-grow: 1;
+    grid-area: content;
     padding: 20px;
-    background-color: #fff;
+    overflow-y: auto;
+    background-image: linear-gradient(to bottom, #f2994a, #f2c94c)
   }
   
   .meals {
@@ -64,17 +75,16 @@
   }
   
   .mealCard {
-    background-color: #e1e1e1; /* Placeholder color */
+    background-color: #e1e1e1;
     padding: 20px;
     border-radius: 5px;
-    height: 200px; /* Or any height you prefer */
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
   }
   
-  /* Add any additional responsive design */
   @media (max-width: 768px) {
     .header {
       flex-direction: column;
@@ -92,7 +102,7 @@
     }
     
     .sidebar {
-      display: none; /* Hide sidebar on smaller screens if needed */
+      display: none;
     }
   }
   
