@@ -156,13 +156,18 @@ function DashboardPage() {
       </aside>
 
       <main className={styles.content}>
-        <section className={styles.meals}>
-          {meals.map((meal, index) => (
-            <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
-              {meal.name}
-            </div>
-          ))}
-        </section>
+      <section className={styles.meals}>
+  {meals.map((meal, index) => (
+    <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
+      <img
+        src="/img/placeholder.png"
+        alt="Meal"
+        className={styles.mealImage} // Dodaj klasę dla stylizacji obrazka
+      />
+      {meal.name}
+    </div>
+  ))}
+</section>
       </main>
 
       {isModalOpen && selectedMeal && (

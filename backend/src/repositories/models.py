@@ -2,7 +2,7 @@ from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
-from enums import LikeDislikeEnum, UnitOfMeasureEnum
+from enums import UnitOfMeasureEnum
 
 meal_category_association = Table(
     "meal_category_association",
@@ -46,25 +46,11 @@ class Meal(Base):
     name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
-    likes_count: Mapped[int] = mapped_column(Integer)
     preparation: Mapped[str] = mapped_column(String)
 
-    likes: Mapped[list["Like"]] = relationship("Like", back_populates="meal")
     user = relationship("User", back_populates="meals")
     category = relationship("Category", secondary=meal_category_association, back_populates="meals")
     products = relationship("Product", secondary=meal_product_association, back_populates="meals")
-
-
-class Like(Base):
-    __tablename__ = "like"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)  # noqa: A003
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
-    meal_id: Mapped[int] = mapped_column(Integer, ForeignKey("meal.id"))
-    value: Mapped[LikeDislikeEnum] = mapped_column(Enum(LikeDislikeEnum))
-
-    user: Mapped["User"] = relationship("User", back_populates="likes")
-    meal: Mapped[Meal] = relationship("Meal", back_populates="likes")
 
 
 class User(Base):
@@ -76,7 +62,6 @@ class User(Base):
     user_details_id: Mapped[int] = mapped_column(Integer, ForeignKey("user_details.id"))
 
     user_details = relationship("UserDetails", back_populates="user")
-    likes = relationship("Like", back_populates="user")
     meals = relationship("Meal", back_populates="user")
 
 

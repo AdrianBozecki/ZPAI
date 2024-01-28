@@ -14,7 +14,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: white;
+    background-color: rgb(245, 235, 235);
   }
   
   .actions {
@@ -55,10 +55,17 @@
   }
   
   .navButton {
-    background: none;
-    border: none;
-    margin: 10px 0;
-    cursor: pointer;
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Dark grey text color */
+    padding: 10px 15px; /* Padding around the text */
+    margin-bottom: 8px; /* Space between buttons */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Button occupies the full width of its parent */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    cursor: pointer; /* Cursor indicates button */
+    transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
   }
   
   .content {
@@ -80,9 +87,17 @@
     border-radius: 5px;
     height: 200px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
     align-items: center;
     font-weight: bold;
+  }
+
+  .mealImage {
+    max-width: 90%;
+    max-height: 90%; 
+    display: flex;
+    margin-bottom: 8px;
   }
   
   @media (max-width: 768px) {
@@ -105,7 +120,7 @@
   
   @media (max-width: 414px) {
     .dashboard {
-      grid-template-columns: 100px 1fr; /* Wąska kolumna na kategorie */
+      grid-template-columns: 120px 1fr; /* Wąska kolumna na kategorie */
       grid-template-rows: auto 1fr;
       grid-template-areas:
         "header header"
@@ -147,6 +162,14 @@
   .mealCard {
     height: 150px; /* Zmniejsza wysokość kart posiłków */
     padding: 10px; /* Zmniejsza padding kart posiłków */
+
+  }
+
+  .mealImage {
+    max-width: 55%;
+    max-height: 90%; 
+    display: flex;
+    margin-bottom: 10px;
   }
     
 }

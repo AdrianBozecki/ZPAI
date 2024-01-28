@@ -1,3 +1,4 @@
+from sqlalchemy import desc
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
 
@@ -17,7 +18,7 @@ class MealsRepository(MealsRepositoryInterface):
         self.db = db
 
     async def list_meals(self, category_id: int | None, name: str | None) -> list[Meal]:
-        query = select(Meal)
+        query = select(Meal).order_by(desc(Meal.id))
         if category_id is not None:
             query = query.join(Meal.category).filter(Category.id == category_id)
         if name is not None:
@@ -34,7 +35,6 @@ class MealsRepository(MealsRepositoryInterface):
             name=meal.name,
             description=meal.description,
             user_id=meal.user_id,
-            likes_count=meal.likes_count,
             preparation=meal.preparation,
         )
 
