@@ -1,15 +1,16 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Body, Depends
+from fastapi.security import OAuth2PasswordBearer
 from fastapi_restful.cbv import cbv
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from business_logic.entities.meals import CreateMealEntity, MealEntity
-from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase
+from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase, DeleteMealUseCase
 from database import get_db
 from repositories.meals import MealsRepository
-
 meals_router = APIRouter()
-
 
 @cbv(meals_router)
 class MealsCBV:
@@ -25,9 +26,9 @@ class MealsCBV:
         status_code=status.HTTP_200_OK,
         response_model=list[MealEntity],
     )
-    async def list_meals(self, category_id: int | None = None) -> list[MealEntity]:
+    async def list_meals(self, category_id: int | None = None, name: str | None = None, ) -> list[MealEntity]:
         use_case = ListMealsUseCase(self.repo)
-        meals = await use_case.execute(category_id)
+        meals = await use_case.execute(category_id, name)
         return meals
 
     @meals_router.post(
@@ -43,3 +44,13 @@ class MealsCBV:
     ) -> MealEntity:
         use_case = CreateMealUseCase(self.repo)
         return await use_case.execute(meal)
+
+
+    @meals_router.delete(
+        f"{MEALS_BASE_URL}/{{meal_id}}",
+        summary="Delete meal",
+        status_code=status.HTTP_204_NO_CONTENT,
+    )
+    async def delete_meal(self, meal_id: int) -> None:
+        use_case = DeleteMealUseCase(self.repo)
+        return await use_case.execute(meal_id)

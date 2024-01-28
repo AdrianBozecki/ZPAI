@@ -8,8 +8,8 @@ class ListMealsUseCase:
     def __init__(self, repo: MealsRepositoryInterface):
         self.repo = repo
 
-    async def execute(self, category_id: int | None) -> List[MealEntity]:
-        meals = await self.repo.list_meals(category_id)
+    async def execute(self, category_id: int | None, name: str | None) -> List[MealEntity]:
+        meals = await self.repo.list_meals(category_id, name)
         return [MealEntity.from_orm(meal) for meal in meals]
 
 
@@ -20,3 +20,13 @@ class CreateMealUseCase:
     async def execute(self, meal: CreateMealEntity) -> MealEntity:
         result = await self.repo.create_meal(meal)
         return MealEntity.from_orm(result)
+
+
+class DeleteMealUseCase:
+
+    def __init__(self, repo: MealsRepositoryInterface):
+        self.repo = repo
+
+    async def execute(self, meal_id: int) -> None:
+        await self.repo.delete_meal(meal_id)
+        return None

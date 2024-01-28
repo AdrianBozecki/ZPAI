@@ -8,6 +8,6 @@ class LikeDislikeEnum(enum.Enum):
 
 class UnitOfMeasureEnum(enum.Enum):
     GRAM = "GRAM"
-    MILLILITER = "MILILITER"
-    CENTIMETER = "CENTIMETr"
+    MILLILITER = "MILLILITER"
+    CENTIMETER = "CENTIMETER"
     PIECE = "PIECE"

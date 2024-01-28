@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-image: linear-gradient(to bottom, #f2994a, #f2c94c); /* Gradient tła */
+  background-image: linear-gradient(to bottom, #f2994a, #f2c94c);
 }
 
 .title {
@@ -47,7 +47,7 @@
 
 .button,
 .linkButton {
-  width: calc(100% - 1.6rem); /* Odejmujemy padding, aby szerokość była równa szerokości inputów */
+  width: calc(100% - 1.6rem);
   padding: 0.8rem;
   margin-bottom: 1rem;
   border: none;
@@ -62,7 +62,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold; /* Pogrubienie tekstu */
+  font-weight: bold;
 }
 
 .button:hover,
@@ -84,7 +84,6 @@
   background-color: #4e9f3d;
 }
 
-/* Dodajemy specyficzne style dla wyśrodkowania tekstu nad przyciskiem */
 .linkContainer {
   width: 100%;
   display: flex;
@@ -95,30 +94,30 @@
 
 @media only screen and (max-width: 414px) {
   .title {
-    font-size: 48px; /* Mniejszy rozmiar dla lepszej czytelności */
-    margin-bottom: 1rem; /* Mniejszy margines dla lepszego wykorzystania przestrzeni */
+    font-size: 48px;
+    margin-bottom: 1rem;
   }
 
   .form {
-    width: 70%; /* Pełniejsze wykorzystanie dostępnej szerokości */
-    padding: 1rem; /* Mniejszy padding dla lepszego wykorzystania przestrzeni */
+    width: 70%;
+    padding: 1rem;
   }
 
   .label {
-    font-size: 14px; /* Mniejszy rozmiar fontu dla etykiet */
+    font-size: 14px;
   }
 
   .input {
-    padding: 0.6rem; /* Mniejszy padding dla pól tekstowych */
+    padding: 0.6rem;
   }
 
   .button,
   .linkButton {
-    padding: 0.6rem; /* Mniejszy padding dla przycisków */
-    font-size: 14px; /* Mniejszy rozmiar fontu dla przycisków */
+    padding: 0.6rem;
+    font-size: 14px;
   }
 
   .linkButton {
-    padding: 0.3rem 0.6rem; /* Mniejszy padding dla linku/przycisku rejestracji */
+    padding: 0.3rem 0.6rem;
   }
 }
