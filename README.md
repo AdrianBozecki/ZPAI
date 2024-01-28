@@ -46,49 +46,49 @@ npm start
 ```
 
 ## ERD Diagram
-![Screenshot 2024-01-28 at 18.42.54.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2018.42.54.png)
+![ERD.png](backend%2FDocs%2FERD.png)
 
 ## Screenshots of application
 ## Desktop view:
 
 Sign in page:
-![Screenshot 2024-01-28 at 19.19.38.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.19.38.png)
+![desktop_sign_in.png](backend%2FDocs%2Fdesktop_sign_in.png)
 
 Sign up page:
-![Screenshot 2024-01-28 at 19.19.44.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.19.44.png)
+![dekstop_sign_up.png](backend%2FDocs%2Fdekstop_sign_up.png)
 
 Main view:
-![Screenshot 2024-01-28 at 19.19.53.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.19.53.png)
+![desktop_dashboard.png](backend%2FDocs%2Fdesktop_dashboard.png)
 
 Detail view:
-![Screenshot 2024-01-28 at 19.20.02.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.02.png)
-![Screenshot 2024-01-28 at 19.20.14.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.14.png)
+![desktop_detail_1.png](backend%2FDocs%2Fdesktop_detail_1.png)
+![desktop_detail_2.png](backend%2FDocs%2Fdesktop_detail_2.png)
 
 Add Meal view:
-![Screenshot 2024-01-28 at 19.20.23.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.23.png)
+![dekstop_add_meal.png](backend%2FDocs%2Fdekstop_add_meal.png)
 
 
 ## Mobile view:
 
 Sign in page:
 
-![Screenshot 2024-01-28 at 19.20.34.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.34.png)
+![mobile_sign_in.png](backend%2FDocs%2Fmobile_sign_in.png)![Screenshot 2024-01-28 at 19.20.34.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.34.png)
 
 Sign up page:
 
-![Screenshot 2024-01-28 at 19.20.39.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.39.png)
+![mobile_sign_up.png](backend%2FDocs%2Fmobile_sign_up.png)
 
 Main view:
 
-![Screenshot 2024-01-28 at 19.20.53.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.20.53.png)
+![mobile_dashboard.png](backend%2FDocs%2Fmobile_dashboard.png)
 
 Detail view:
 
-![Screenshot 2024-01-28 at 19.21.02.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.21.02.png)
+![mobile_detail.png](backend%2FDocs%2Fmobile_detail.png)
 
 Add Meal view:
 
-![Screenshot 2024-01-28 at 19.21.09.png](..%2F..%2FDesktop%2FScreenshot%202024-01-28%20at%2019.21.09.png)
+![mobile_add_meal.png](backend%2FDocs%2Fmobile_add_meal.png)
 
 ## Autor
 
