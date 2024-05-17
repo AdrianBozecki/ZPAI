@@ -1,8 +1,9 @@
+import logging
 from typing import List
 
-from business_logic.entities.meals import CreateMealEntity, MealEntity
+from business_logic.entities.meals import CreateMealEntity, MealEntity, MealWithProductsEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
-
+logger = logging.getLogger("foo-logger")
 
 class ListMealsUseCase:
     def __init__(self, repo: MealsRepositoryInterface):
@@ -30,3 +31,14 @@ class DeleteMealUseCase:
     async def execute(self, meal_id: int) -> None:
         await self.repo.delete_meal(meal_id)
         return None
+
+
+class GetShoppingListUseCase:
+
+    def __init__(self, repo: MealsRepositoryInterface):
+        self.repo = repo
+
+    async def execute(self, meal_id: int) -> MealWithProductsEntity:
+        results = await self.repo.get_meal(meal_id)
+        logger.debug(results)
+        return MealWithProductsEntity.from_orm(results)

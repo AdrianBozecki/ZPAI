@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -21,22 +21,16 @@ class Category(Base):
     meals = relationship("Meal", secondary=meal_category_association, back_populates="category")
 
 
-meal_product_association = Table(
-    "meal_product_association",
-    Base.metadata,
-    Column("meal_id", Integer, ForeignKey("meal.id")),
-    Column("product_id", Integer, ForeignKey("product.id")),
-)
-
-
 class Product(Base):
     __tablename__ = "product"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)  # noqa: A003
-    name: Mapped[str] = mapped_column(String, unique=True)
+    name: Mapped[str] = mapped_column(String)
     unit_of_measure: Mapped[str] = mapped_column(Enum(UnitOfMeasureEnum))
+    value: Mapped[float] = mapped_column(Float)
+    meal_id: Mapped[int] = mapped_column(Integer, ForeignKey("meal.id"))
 
-    meals = relationship("Meal", secondary=meal_product_association, back_populates="products")
+    meal = relationship("Meal", back_populates="products")
 
 
 class Meal(Base):
@@ -50,8 +44,7 @@ class Meal(Base):
 
     user = relationship("User", back_populates="meals")
     category = relationship("Category", secondary=meal_category_association, back_populates="meals")
-    products = relationship("Product", secondary=meal_product_association, back_populates="meals")
-
+    products = relationship("Product", back_populates="meal")
 
 class User(Base):
     __tablename__ = "user"
