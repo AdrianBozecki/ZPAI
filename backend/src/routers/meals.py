@@ -8,10 +8,11 @@ from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from business_logic.entities.meals import CreateMealEntity, MealEntity, MealWithProductsEntity
+from business_logic.entities.meals import CreateMealEntity, MealEntity
 from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase, DeleteMealUseCase, \
     GetShoppingListUseCase
 from database import get_db
+from enums import UnitSystemEnum
 from repositories.meals import MealsRepository
 meals_router = APIRouter()
 
@@ -63,18 +64,10 @@ class MealsCBV:
         summary="Get shopping list for meal",
         status_code=status.HTTP_200_OK,
     )
-    async def get_shopping_list(self, meal_id: int) -> Response:
+    async def get_shopping_list(self, meal_id: int, unit_system: UnitSystemEnum = UnitSystemEnum.METRIC) -> Response:
         use_case = GetShoppingListUseCase(self.repo)
-        meal = await use_case.execute(meal_id)
+        html_content = await use_case.execute(meal_id, unit_system)
 
-        # Tworzenie struktury HTML dla pliku PDF
-        html_content = f"<h1>Shopping list for: {meal.name}</h1><h2>Products:</h2><ul>"
-        for product in meal.products:
-            html_content += f"<li>{product.name}, {product.unit_of_measure}</li>"
-        html_content += "</ul>"
-
-        # Generowanie pliku PDF
         pdf_content = pdfkit.from_string(html_content, False)
 
-        # Zwrócenie pliku PDF jako odpowiedzi na żądanie HTTP
         return Response(content=pdf_content, media_type="application/pdf")

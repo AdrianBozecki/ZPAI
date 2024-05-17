@@ -19,3 +19,7 @@ class UnitOfMeasureEnum(enum.Enum):
     TEASPOON = "TEASPOON"
     TABLESPOON = "TABLESPOON"
     CUP = "CUP"
+
+class UnitSystemEnum(enum.Enum):
+    METRIC = "METRIC"
+    IMPERIAL = "IMPERIAL"
