@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import desc
+from sqlalchemy import desc, delete
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload, selectinload
 
@@ -82,9 +82,17 @@ class MealsRepository(MealsRepositoryInterface):
         return refreshed_meal.unique().scalars().one()
 
     async def delete_meal(self, meal_id: int) -> None:
+        # Pobierz posiłek, który ma być usunięty
         result = await self.db.execute(select(Meal).where(Meal.id == meal_id))
         meal = result.scalar_one_or_none()
+
         if meal:
+            # Usuń najpierw wszystkie powiązane produkty
+            await self.db.execute(delete(Product).where(Product.meal_id == meal_id))
+
+            # Teraz usuń posiłek
             await self.db.delete(meal)
             await self.db.commit()
+
+        logger.info(f"Deleted meal: {meal}")
         return None

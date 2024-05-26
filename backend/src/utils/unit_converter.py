@@ -31,7 +31,7 @@ class UnitConverter:
         UnitOfMeasureEnum.GALLON: (1, UnitOfMeasureEnum.GALLON),
         UnitOfMeasureEnum.TEASPOON: (0.17636981, UnitOfMeasureEnum.OUNCE),
         UnitOfMeasureEnum.TABLESPOON: (0.529109429, UnitOfMeasureEnum.OUNCE),
-        UnitOfMeasureEnum.CUP: (0.5511, UnitOfMeasureEnum.POUND),
+        UnitOfMeasureEnum.CUP: (14, UnitOfMeasureEnum.OUNCE),
     }
 
     @classmethod

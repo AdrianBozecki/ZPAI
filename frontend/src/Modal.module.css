@@ -9,9 +9,9 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
-  
-  .modalContent {
+}
+
+.modalContent {
     background: #fff;
     padding: 20px;
     border-radius: 5px;
@@ -23,23 +23,27 @@
     gap: 10px;
     max-height: 80vh;
     overflow-y: auto;
-  }
-  
-  .modalContent h2 {
+}
+
+.modalContent h2 {
     margin-top: 0;
-  }
-  
-  .modalContent p {
+    color: #333;
+}
+
+.modalContent p {
     margin: 10px 0;
-  }
-  
-  .modalContent img {
-    max-width: 100%;
+    color: #666;
+}
+
+.modalContent img {
+    max-width: 50%;
     height: auto;
     border-radius: 5px;
-  }
-  
-  .modalContent button {
+        display: block; /* umożliwia wyśrodkowanie obrazu */
+    margin: auto; /* wyśrodkowuje obraz */
+}
+
+.modalContent button {
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
@@ -47,17 +51,40 @@
     cursor: pointer;
     background-color: #007bff;
     color: white;
-  }
-  
-  .modalContent button:hover {
+    font-weight: bold;
+}
+
+.modalContent button:hover {
     background-color: #0056b3;
-  }
-  
-  .modalContent button:last-child {
+}
+
+.modalContent button:last-child {
     background-color: #dc3545;
-  }
-  
-  .modalContent button:last-child:hover {
+}
+
+.modalContent button:last-child:hover {
     background-color: #c82333;
-  }
-  
+}
+
+.exportSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.exportSection label {
+    margin-right: 10px;
+}
+
+.exportSection button {
+    margin-top: 10px;
+    background-color: #28a745;
+}
+
+.exportSection button:hover {
+    background-color: #218838;
+}

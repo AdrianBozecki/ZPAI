@@ -40,6 +40,7 @@ app.include_router(users_router, tags=["users"])
 app.include_router(categories_router, tags=["categories"])
 app.include_router(products_router, tags=["products"])
 
+
 @app.on_event("startup")
 async def startup_event() -> None:
     async with engine.begin() as conn:

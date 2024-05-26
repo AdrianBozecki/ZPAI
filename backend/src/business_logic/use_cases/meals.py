@@ -70,16 +70,16 @@ class GetShoppingListUseCase:
         <table>
           <tr>
             <th>Name</th>
-            <th>Unit of Measure</th>
             <th>Value</th>
+            <th>Unit of Measure</th>
           </tr>
         """
         for product in meal.products:
             html_content += f"""
             <tr>
               <td>{product.name}</td>
-              <td>{product.unit_of_measure.value}</td>
               <td>{product.value}</td>
+              <td>{product.unit_of_measure.value}</td>
             </tr>
             """
         html_content += "</table>"

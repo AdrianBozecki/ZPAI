@@ -132,7 +132,7 @@ function DashboardPage() {
       <header className={styles.header}>
         <h1>MealFuel</h1>
         <div className={styles.actions}>
-          <button className={styles.addButton} onClick={openAddMealModal}>+ add</button>
+          <button className={styles.addButton} onClick={openAddMealModal}>+ add meal</button>
           <input
   className={styles.search}
   placeholder="search meal"
