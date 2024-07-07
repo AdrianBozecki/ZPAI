@@ -20,7 +20,7 @@ class MealsRepository(MealsRepositoryInterface):
         self.db = db
 
     async def get_meal(self, meal_id: int) -> Meal:
-        query = select(Meal).options(selectinload(Meal.products), selectinload(Meal.category)).where(Meal.id == meal_id)
+        query = select(Meal).options(selectinload(Meal.products), selectinload(Meal.category), selectinload(Meal.likes)).where(Meal.id == meal_id)
         result = await self.db.execute(query)
         meal = result.scalar_one_or_none()
         return meal
@@ -34,6 +34,7 @@ class MealsRepository(MealsRepositoryInterface):
         query = query.options(
             joinedload(Meal.category),
             joinedload(Meal.products),
+            joinedload(Meal.likes),
         )
         result = await self.db.execute(query)
 

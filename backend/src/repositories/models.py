@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table, Float, DateTime
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table, Float, DateTime, \
+    UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -98,3 +99,5 @@ class Like(Base):
 
     user = relationship("User", back_populates="likes")
     meal = relationship("Meal", back_populates="likes")
+
+    __table_args__ = (UniqueConstraint('user_id', 'meal_id', name='_user_meal_uc'),)

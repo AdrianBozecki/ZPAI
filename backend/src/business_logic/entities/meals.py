@@ -24,6 +24,7 @@ class CreateMealEntity(BaseMealEntity):
 class MealEntity(BaseMealEntity):
     id: int  # noqa: A003
     products: list[ProductEntity] = Field(default_factory=list)
+    likes_count: int = 0
 
     class Config:
         from_attributes = True
@@ -38,6 +39,7 @@ class MealEntity(BaseMealEntity):
             user_id=meal.user_id,
             products=meal.products,
             category_ids=[category.id for category in meal.category],
+            likes_count=len(meal.likes),
         )
 
 
