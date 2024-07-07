@@ -1,7 +1,7 @@
 import logging
 
-from http_client.base_http_client import BaseHTTPClient
-from http_client.converters import convert_from_json_to_entity
+from clients.base_http_client import BaseHTTPClient
+from clients.converters import convert_from_json_to_entity
 from settings import settings
 logger = logging.getLogger("foo-logger")
 
@@ -12,8 +12,8 @@ class SpooncularAPIClient(BaseHTTPClient):
         super().__init__(self.base_url, self.headers)
 
     async def get_recipes_by_ingredients(self, ingredients: str):
-        path = "/recipes/findByIngredients"
         params = {"ingredients": ingredients, "number": 1}
-        result = await self.make_request(path, params=params)
-        logger.debug(result)
-        return convert_from_json_to_entity(result)
+        general_data = await self.make_request("/recipes/findByIngredients", params=params)
+        general_data = general_data[0]
+        additional_data = await self.make_request(f"/recipes/{general_data['id']}/information")
+        return convert_from_json_to_entity(general_data, additional_data)

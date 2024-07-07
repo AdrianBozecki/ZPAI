@@ -4,7 +4,7 @@ from fastapi import APIRouter, Query, Depends
 from fastapi_restful.cbv import cbv
 
 from business_logic.entities.spooncular_recipes import SpooncularRecipeEntity
-from http_client.http_client import SpooncularAPIClient
+from clients.http_client import SpooncularAPIClient
 
 logger = logging.getLogger("foo-logger")
 
