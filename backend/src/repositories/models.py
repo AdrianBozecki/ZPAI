@@ -45,6 +45,8 @@ class Meal(Base):
     user = relationship("User", back_populates="meals")
     category = relationship("Category", secondary=meal_category_association, back_populates="meals")
     products = relationship("Product", back_populates="meal")
+    comments = relationship("Comment", back_populates="meal")
+    likes = relationship("Like", back_populates="meal")
 
 class User(Base):
     __tablename__ = "user"
@@ -56,6 +58,8 @@ class User(Base):
 
     user_details = relationship("UserDetails", back_populates="user")
     meals = relationship("Meal", back_populates="user")
+    comments = relationship("Comment", back_populates="user")
+    likes = relationship("Like", back_populates="user")
 
 
 class UserDetails(Base):
@@ -67,3 +71,26 @@ class UserDetails(Base):
     phone_number: Mapped[str] = mapped_column(String, index=True)
 
     user = relationship("User", back_populates="user_details")
+
+
+class Comment(Base):
+    __tablename__ = "comment"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)  # noqa: A003
+    content: Mapped[str] = mapped_column(String)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    meal_id: Mapped[int] = mapped_column(Integer, ForeignKey("meal.id"))
+
+    user = relationship("User", back_populates="comments")
+    meal = relationship("Meal", back_populates="comments")
+
+
+class Like(Base):
+    __tablename__ = "like"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)  # noqa: A003
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    meal_id: Mapped[int] = mapped_column(Integer, ForeignKey("meal.id"))
+
+    user = relationship("User", back_populates="likes")
+    meal = relationship("Meal", back_populates="likes")

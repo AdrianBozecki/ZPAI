@@ -15,6 +15,7 @@ from business_logic.use_cases.users import GetUserUseCase
 from database import Base, engine, get_db_for_middleware
 from repositories.users import UsersRepository
 from routers.categories import categories_router
+from routers.comments import comments_router
 from routers.meals import meals_router
 from routers.products import products_router
 from routers.users import users_router
@@ -39,6 +40,7 @@ app.include_router(meals_router, tags=["meals"])
 app.include_router(users_router, tags=["users"])
 app.include_router(categories_router, tags=["categories"])
 app.include_router(products_router, tags=["products"])
+app.include_router(comments_router, tags=["comments"])
 
 
 @app.on_event("startup")
