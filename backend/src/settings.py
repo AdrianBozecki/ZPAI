@@ -29,6 +29,7 @@ class Settings(BaseModel):
             "foo-logger": {"handlers": ["default"], "level": "DEBUG"},
         },
     }
+    SPOONCULAR_API_KEY: str | None = os.getenv("SPOONCULAR_API_KEY")
 
 
 settings = Settings()

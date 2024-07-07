@@ -19,6 +19,7 @@ from routers.comments import comments_router
 from routers.likes import likes_router
 from routers.meals import meals_router
 from routers.products import products_router
+from routers.spooncular_recipes import spooncular_meals_router
 from routers.users import users_router
 from settings import settings
 import pdfkit
@@ -43,6 +44,7 @@ app.include_router(categories_router, tags=["categories"])
 app.include_router(products_router, tags=["products"])
 app.include_router(comments_router, tags=["comments"])
 app.include_router(likes_router, tags=["likes"])
+app.include_router(spooncular_meals_router, tags=["spooncular"])
 
 
 @app.on_event("startup")
