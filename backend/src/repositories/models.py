@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table, Float
+from datetime import datetime
+
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table, Float, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -80,6 +82,8 @@ class Comment(Base):
     content: Mapped[str] = mapped_column(String)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     meal_id: Mapped[int] = mapped_column(Integer, ForeignKey("meal.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
 
     user = relationship("User", back_populates="comments")
     meal = relationship("Meal", back_populates="comments")
