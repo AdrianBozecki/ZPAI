@@ -23,7 +23,7 @@ function RegisterPage() {
     }
 
     if (password !== confirmPassword) {
-      setError('Hasła nie są identyczne.');
+      setError('Passwords are not matching.');
       return;
     }
   

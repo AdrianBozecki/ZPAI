@@ -55,17 +55,17 @@
   }
   
   .navButton {
-    background-color: #f0f0f0; /* Light grey background */
-    color: #333; /* Dark grey text color */
-    padding: 10px 15px; /* Padding around the text */
-    margin-bottom: 8px; /* Space between buttons */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    text-align: left; /* Align text to the left */
-    width: 100%; /* Button occupies the full width of its parent */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
-    cursor: pointer; /* Cursor indicates button */
-    transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
   }
   
   .content {
@@ -120,48 +120,48 @@
   
   @media (max-width: 414px) {
     .dashboard {
-      grid-template-columns: 120px 1fr; /* Wąska kolumna na kategorie */
+      grid-template-columns: 120px 1fr;
       grid-template-rows: auto 1fr;
       grid-template-areas:
         "header header"
         "sidebar content";
     }
     .header {
-        flex-direction: row; /* Przywraca domyślny układ poziomy dla nagłówka */
-        justify-content: space-between; /* Rozkłada elementy równomiernie */
-        padding: 10px; /* Zmniejsza padding dla mniejszych ekranów */
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
       }
 
     
   .actions {
-    flex-direction: row; /* Przywraca układ wiersza dla akcji */
-    width: auto; /* Automatyczna szerokość */
-    justify-content: space-between; /* Rozkłada elementy równomiernie */
+    flex-direction: row;
+    width: auto;
+    justify-content: space-between;
     margin-top: 20px;
   }
 
   .addButton,
   .settingsButton {
-    padding: 5px; /* Zmniejsza padding dla przycisków */
-    font-size: 14px; /* Zmniejsza rozmiar czcionki przycisków */
+    padding: 5px;
+    font-size: 14px;
   }
 
   .search {
-    width: 60%; /* Zmniejsza szerokość pola wyszukiwania */
-    margin: 0 5px; /* Dostosowuje marginesy */
+    width: 30%;
+    margin: 0 5px;
   }
 
   .content {
-    padding: 10px; /* Zmniejsza padding dla zawartości */
+    padding: 10px;
   }
 
   .meals {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Dostosowuje rozmiar kart posiłków */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .mealCard {
-    height: 150px; /* Zmniejsza wysokość kart posiłków */
-    padding: 10px; /* Zmniejsza padding kart posiłków */
+    height: 150px;
+    padding: 10px;
 
   }
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styles from './AddMealModal.module.css';
 
-function AddMealModal({ onClose, categories, products, onProductsUpdated, onMealsRefresh}) {
+function AddMealModal({ onClose, categories, onMealsRefresh}) {
+    const unitsOfMeasure = ['GRAM', 'KILOGRAM', 'MILLILITER', 'LITER', 'PIECE', 'OUNCE', 'POUND', 'PINT', 'QUART', 'GALLON', 'TEASPOON', 'TABLESPOON', 'CUP'];
+
     const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedProducts, setSelectedProducts] = useState([]);
-    const [newProductName, setNewProductName] = useState('');
-    const [newProductUnit, setNewProductUnit] = useState('');
+    const [selectedProducts, setSelectedProducts] = useState([{ name: '', value: '', unit_of_measure: unitsOfMeasure[0] }]);
     const [mealName, setMealName] = useState('');
     const [mealDescription, setMealDescription] = useState('');
     const [mealPreparation, setMealPreparation] = useState('');
@@ -21,44 +21,14 @@ function AddMealModal({ onClose, categories, products, onProductsUpdated, onMeal
         setSelectedCategories(selectedOptions);
     };
 
-    const handleProductChange = (event) => {
-        const selectedOptions = Array.from(event.target.selectedOptions).map(option => option.value);
-        setSelectedProducts(selectedOptions);
+    const handleProductChange = (index, field, event) => {
+        const newProducts = [...selectedProducts];
+        newProducts[index][field] = event.target.value;
+        setSelectedProducts(newProducts);
     };
 
-    const handleAddProduct = async (e) => {
-        e.preventDefault();
-
-        const token = localStorage.getItem('access_token');
-        const user_id = localStorage.getItem('user_id');
-        const payload = {
-            name: newProductName,
-            unit_of_measure: newProductUnit,
-        };
-
-        try {
-            const response = await fetch('http://localhost:8000/products', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                    'User_id': user_id
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-                alert('Product added successfully!');
-                setNewProductName('');
-                setNewProductUnit('');
-                onProductsUpdated(); // Odśwież listę produktów
-            } else {
-                throw new Error('Failed to add new product');
-            }
-        } catch (error) {
-            console.error('Error adding new product:', error);
-            alert('Failed to add new product.');
-        }
+    const addProduct = () => {
+        setSelectedProducts([...selectedProducts, { name: '', value: '', unit_of_measure: '' }]);
     };
 
     const handleAddMeal = async (e) => {
@@ -70,7 +40,7 @@ function AddMealModal({ onClose, categories, products, onProductsUpdated, onMeal
         const payload = {
             name: mealName,
             description: mealDescription,
-            product_ids: selectedProducts.map(Number),
+            products: selectedProducts,
             category_ids: selectedCategories.map(Number),
             preparation: mealPreparation,
             user_id: Number(user_id),
@@ -99,27 +69,15 @@ function AddMealModal({ onClose, categories, products, onProductsUpdated, onMeal
             alert('Failed to add new meal.');
         }
     };
+    const removeProduct = (index) => {
+    const newProducts = [...selectedProducts];
+    newProducts.splice(index, 1);
+    setSelectedProducts(newProducts);
+};
 
     return (
         <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
             <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-                <h3>Add new product</h3>
-                <form onSubmit={handleAddProduct}>
-                    <input
-                        type="text"
-                        placeholder="Product Name"
-                        value={newProductName}
-                        onChange={(e) => setNewProductName(e.target.value)}
-                    />
-                    <select value={newProductUnit} onChange={(e) => setNewProductUnit(e.target.value)}>
-                        <option value="">Select Unit</option>
-                        <option value="GRAM">Gram</option>
-                        <option value="MILLILITER">Milliliter</option>
-                        <option value="CENTIMETER">Centimeter</option>
-                        <option value="PIECE">Piece</option>
-                    </select>
-                    <button type="submit">Add Product</button>
-                </form>
                 <h3>Add New Meal</h3>
                 <form onSubmit={handleAddMeal}>
                     <input
@@ -145,17 +103,37 @@ function AddMealModal({ onClose, categories, products, onProductsUpdated, onMeal
                             </option>
                         ))}
                     </select>
-                    <select multiple value={selectedProducts} onChange={handleProductChange}>
-                        {products.map((product) => (
-                            <option key={product.id} value={product.id}>
-                                {product.name}
-                            </option>
-                        ))}
-                    </select>
+                    {selectedProducts.map((product, index) => (
+    <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+        <input
+            type="text"
+            placeholder="Product Name"
+            value={product.name}
+            onChange={(e) => handleProductChange(index, 'name', e)}
+        />
+        <input
+            type="number"
+            placeholder="Value"
+            value={product.value}
+            onChange={(e) => handleProductChange(index, 'value', e)}
+        />
+        <select
+            value={product.unit_of_measure}
+            onChange={(e) => handleProductChange(index, 'unit_of_measure', e)}
+        >
+            {unitsOfMeasure.map((unit) => (
+                <option key={unit} value={unit}>
+                    {unit}
+                </option>
+            ))}
+        </select>
+        <button type="button" onClick={() => removeProduct(index)} style={{ marginLeft: '10px' }}>-</button>
+    </div>
+))}
+        <button type="button" onClick={addProduct}>Add next product</button>
                     <button type="submit">Submit</button>
                     <button onClick={onClose}>Close</button>
                 </form>
-                
             </div>
         </div>
     );

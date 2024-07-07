@@ -1,14 +1,18 @@
 from typing import Annotated
 
+import pdfkit
 from fastapi import APIRouter, Body, Depends
 from fastapi.security import OAuth2PasswordBearer
 from fastapi_restful.cbv import cbv
+from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from business_logic.entities.meals import CreateMealEntity, MealEntity
-from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase, DeleteMealUseCase
+from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase, DeleteMealUseCase, \
+    GetShoppingListUseCase
 from database import get_db
+from enums import UnitSystemEnum
 from repositories.meals import MealsRepository
 meals_router = APIRouter()
 
@@ -54,3 +58,16 @@ class MealsCBV:
     async def delete_meal(self, meal_id: int) -> None:
         use_case = DeleteMealUseCase(self.repo)
         return await use_case.execute(meal_id)
+
+    @meals_router.get(
+        f"{MEALS_BASE_URL}/{{meal_id}}/shopping-list",
+        summary="Get shopping list for meal",
+        status_code=status.HTTP_200_OK,
+    )
+    async def get_shopping_list(self, meal_id: int, unit_system: UnitSystemEnum = UnitSystemEnum.METRIC) -> Response:
+        use_case = GetShoppingListUseCase(self.repo)
+        html_content = await use_case.execute(meal_id, unit_system)
+
+        pdf_content = pdfkit.from_string(html_content, False)
+
+        return Response(content=pdf_content, media_type="application/pdf")

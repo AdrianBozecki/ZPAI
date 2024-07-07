@@ -4,8 +4,9 @@ from enums import UnitOfMeasureEnum
 
 
 class BaseProductEntity(BaseModel):
+    value: float
+    unit_of_measure: UnitOfMeasureEnum
     name: str
-    unit_of_measure: UnitOfMeasureEnum | None = None
 
 
 class CreateProductEntity(BaseProductEntity):

@@ -16,3 +16,8 @@ class MealsRepositoryInterface(ABC):
     @abstractmethod
     async def delete_meal(self, meal_id: int) -> None:
         pass
+
+    @abstractmethod
+    async def get_meal(self, meal_id: int) -> Meal:
+        pass
+

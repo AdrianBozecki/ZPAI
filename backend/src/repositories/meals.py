@@ -1,6 +1,8 @@
-from sqlalchemy import desc
+import logging
+
+from sqlalchemy import desc, delete
 from sqlalchemy.future import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 from business_logic.entities.meals import CreateMealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
@@ -8,14 +10,20 @@ from database import AsyncSessionLocal
 from repositories.models import (
     Category,
     Meal,
-    meal_category_association,
-    meal_product_association,
+    meal_category_association, Product,
 )
 
+logger = logging.getLogger("foo-logger")
 
 class MealsRepository(MealsRepositoryInterface):
     def __init__(self, db: AsyncSessionLocal):
         self.db = db
+
+    async def get_meal(self, meal_id: int) -> Meal:
+        query = select(Meal).options(selectinload(Meal.products), selectinload(Meal.category), selectinload(Meal.likes)).where(Meal.id == meal_id)
+        result = await self.db.execute(query)
+        meal = result.scalar_one_or_none()
+        return meal
 
     async def list_meals(self, category_id: int | None, name: str | None) -> list[Meal]:
         query = select(Meal).order_by(desc(Meal.id))
@@ -23,8 +31,11 @@ class MealsRepository(MealsRepositoryInterface):
             query = query.join(Meal.category).filter(Category.id == category_id)
         if name is not None:
             query = query.filter(Meal.name.ilike(f'%{name}%'))
-        query = query.options(joinedload(Meal.products), joinedload(Meal.category))
-
+        query = query.options(
+            joinedload(Meal.category),
+            joinedload(Meal.products),
+            joinedload(Meal.likes),
+        )
         result = await self.db.execute(query)
 
         meals = result.unique().scalars().all()
@@ -41,13 +52,17 @@ class MealsRepository(MealsRepositoryInterface):
         self.db.add(new_meal)
         await self.db.flush()
 
-        for product_id in meal.product_ids:
-            association = meal_product_association.insert().values(
+        # Tworzenie produktów powiązanych z posiłkiem
+        for product in meal.products:
+            new_product = Product(
+                name=product.name,
+                unit_of_measure=product.unit_of_measure,
+                value=product.value,
                 meal_id=new_meal.id,
-                product_id=product_id,
             )
-            await self.db.execute(association)
+            self.db.add(new_product)
 
+        # Tworzenie powiązań z kategoriami
         for category_id in meal.category_ids:
             association = meal_category_association.insert().values(
                 meal_id=new_meal.id,
@@ -57,6 +72,7 @@ class MealsRepository(MealsRepositoryInterface):
 
         await self.db.commit()
 
+        # Odświeżanie danych posiłku po dodaniu produktów i powiązań z kategoriami
         await self.db.refresh(new_meal)
         refreshed_meal = await self.db.execute(
             select(Meal)
@@ -67,10 +83,17 @@ class MealsRepository(MealsRepositoryInterface):
         return refreshed_meal.unique().scalars().one()
 
     async def delete_meal(self, meal_id: int) -> None:
+        # Pobierz posiłek, który ma być usunięty
         result = await self.db.execute(select(Meal).where(Meal.id == meal_id))
         meal = result.scalar_one_or_none()
+
         if meal:
-            # Asynchroniczne usunięcie posiłku
+            # Usuń najpierw wszystkie powiązane produkty
+            await self.db.execute(delete(Product).where(Product.meal_id == meal_id))
+
+            # Teraz usuń posiłek
             await self.db.delete(meal)
             await self.db.commit()
+
+        logger.info(f"Deleted meal: {meal}")
         return None

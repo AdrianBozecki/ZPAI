@@ -7,7 +7,7 @@ from alembic import context
 
 from database import Base
 from main_fastapi import app
-from repositories.models import Meal, User, UserDetails, Product
+from repositories.models import Meal, User, UserDetails, Product, Comment, Like, Category
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
