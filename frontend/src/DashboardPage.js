@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './DashboardPage.module.css';
 import Modal from './Modal';
 import AddMealModal from './AddMealModal';
+import FindMealModal from './FindMealModal';
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function DashboardPage() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isFindMealModalOpen, setFindMealModalOpen] = useState(false);
 
   const fetchProducts = () => {
     const token = localStorage.getItem('access_token');
@@ -116,6 +118,14 @@ function DashboardPage() {
     setAddMealModalOpen(false);
   };
 
+  const openFindMealModal = () => {
+  setFindMealModalOpen(true);
+};
+
+  const closeFindMealModal = () => {
+  setFindMealModalOpen(false);
+};
+
   const handleLogout = () => {
     localStorage.clear(); // Czyści cały localStorage
     navigate('/'); // Przekierowuje na stronę główną
@@ -132,14 +142,15 @@ function DashboardPage() {
       <header className={styles.header}>
         <h1>MealFuel</h1>
         <div className={styles.actions}>
+          <button className={styles.findButton} onClick={openFindMealModal}>Find Meal</button>
           <button className={styles.addButton} onClick={openAddMealModal}>+ add meal</button>
           <input
-  className={styles.search}
-  placeholder="search meal"
-  value={searchQuery}
-  onChange={handleSearchChange}
-/>
-<button className={styles.settingsButton} onClick={handleLogout}>logout</button>
+              className={styles.search}
+              placeholder="search meal"
+              value={searchQuery}
+              onChange={handleSearchChange}
+          />
+          <button className={styles.settingsButton} onClick={handleLogout}>logout</button>
 
         </div>
       </header>
@@ -177,6 +188,10 @@ function DashboardPage() {
       {isAddMealModalOpen && (
         <AddMealModal onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
       )}
+
+      {isFindMealModalOpen && (
+  <FindMealModal onClose={closeFindMealModal}/>
+)}
     </div>
   );
 }
