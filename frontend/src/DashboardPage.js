@@ -16,6 +16,7 @@ function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isFindMealModalOpen, setFindMealModalOpen] = useState(false);
+  const [mealToAdd, setMealToAdd] = useState(null);
 
   const fetchProducts = () => {
     const token = localStorage.getItem('access_token');
@@ -185,13 +186,12 @@ function DashboardPage() {
         <Modal meal={selectedMeal} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
       )}
 
-      {isAddMealModalOpen && (
-        <AddMealModal onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
-      )}
+{isAddMealModalOpen && (
+  <AddMealModal mealToAdd={mealToAdd} onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
+)}
 
       {isFindMealModalOpen && (
-  <FindMealModal onClose={closeFindMealModal}/>
-)}
+<FindMealModal onClose={closeFindMealModal} setAddMealModalOpen={setAddMealModalOpen} setMealToAdd={setMealToAdd} />)}
     </div>
   );
 }

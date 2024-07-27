@@ -8,9 +8,9 @@ from fastapi.responses import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from business_logic.entities.meals import CreateMealEntity, MealEntity
+from business_logic.entities.meals import CreateMealEntity, MealEntity, UpdateMealEntity
 from business_logic.use_cases.meals import CreateMealUseCase, ListMealsUseCase, DeleteMealUseCase, \
-    GetShoppingListUseCase
+    GetShoppingListUseCase, UpdateMealUseCase
 from database import get_db
 from enums import UnitSystemEnum
 from repositories.meals import MealsRepository
@@ -58,6 +58,18 @@ class MealsCBV:
     async def delete_meal(self, meal_id: int) -> None:
         use_case = DeleteMealUseCase(self.repo)
         return await use_case.execute(meal_id)
+
+
+    @meals_router.patch(
+        f"{MEALS_BASE_URL}/{{meal_id}}",
+        summary="Update meal",
+        status_code=status.HTTP_200_OK,
+        response_model=MealEntity,
+    )
+    async def update_meal(self, meal_id: int, meal: UpdateMealEntity = Body(..., description="Data for meal update")) -> MealEntity:
+        use_case = UpdateMealUseCase(self.repo)
+        meal.id = meal_id
+        return await use_case.execute(meal)
 
     @meals_router.get(
         f"{MEALS_BASE_URL}/{{meal_id}}/shopping-list",

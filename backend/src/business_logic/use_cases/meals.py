@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from business_logic.entities.meals import CreateMealEntity, MealEntity
+from business_logic.entities.meals import CreateMealEntity, MealEntity, UpdateMealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
 from enums import UnitSystemEnum
 from repositories.models import Meal
@@ -36,6 +36,13 @@ class DeleteMealUseCase:
         await self.repo.delete_meal(meal_id)
         return None
 
+class UpdateMealUseCase:
+    def __init__(self, repo: MealsRepositoryInterface):
+        self.repo = repo
+
+    async def execute(self, meal: UpdateMealEntity) -> MealEntity:
+        result = await self.repo.update_meal(meal)
+        return MealEntity.from_orm(result)
 
 class GetShoppingListUseCase:
 

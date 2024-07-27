@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styles from './AddMealModal.module.css';
 
-function AddMealModal({ onClose, categories, onMealsRefresh}) {
+function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh}) {
     const unitsOfMeasure = ['GRAM', 'KILOGRAM', 'MILLILITER', 'LITER', 'PIECE', 'OUNCE', 'POUND', 'PINT', 'QUART', 'GALLON', 'TEASPOON', 'TABLESPOON', 'CUP'];
 
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedProducts, setSelectedProducts] = useState([{ name: '', value: '', unit_of_measure: unitsOfMeasure[0] }]);
-    const [mealName, setMealName] = useState('');
-    const [mealDescription, setMealDescription] = useState('');
-    const [mealPreparation, setMealPreparation] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState(mealToAdd ? mealToAdd.products : [{ name: '', value: '', unit_of_measure: unitsOfMeasure[0] }]);
+  const [mealName, setMealName] = useState(mealToAdd ? mealToAdd.name : '');
+  const [mealDescription, setMealDescription] = useState(mealToAdd ? mealToAdd.description : '');
+  const [mealPreparation, setMealPreparation] = useState(mealToAdd ? mealToAdd.preparation : '')
 
     const handleBackdropClick = (event) => {
         if (event.target === event.currentTarget) {

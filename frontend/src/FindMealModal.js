@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './FindMealModal.module.css';
 import MealResultModal from './MealResultModal';
 
-function FindMealModal({ onClose }) {
+function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState('');
   const [mealResult, setMealResult] = useState(null);
@@ -40,6 +40,22 @@ function FindMealModal({ onClose }) {
     setMealResult(null);
   };
 
+  const openAddMealModal = (meal) => {
+  const mealToAdd = {
+    name: meal.title,
+    description: meal.summary.replace(/<[^>]*>/g, ''),
+    preparation: meal.instructions.replace(/<[^>]*>/g, ''),
+    products: [...meal.used_ingredients, ...meal.missed_ingredients].map(ingredient => ({
+      name: ingredient.name,
+      value: ingredient.amount,
+      unit_of_measure: 'PIECE',
+    })),
+  };
+  setMealToAdd(mealToAdd);
+  setAddMealModalOpen(true);
+  onClose();
+};
+
   return (
     <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
@@ -63,9 +79,9 @@ function FindMealModal({ onClose }) {
         </ul>
         <button onClick={handleFindMeal}>Find Meal</button>
       </div>
-      {mealResult && (
-        <MealResultModal meal={mealResult} onClose={closeMealResultModal} />
-      )}
+        {mealResult && (
+          <MealResultModal meal={mealResult} onClose={closeMealResultModal} openAddMealModal={openAddMealModal} />
+        )}
     </div>
   );
 }

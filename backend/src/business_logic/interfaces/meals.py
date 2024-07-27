@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from business_logic.entities.meals import CreateMealEntity
+from business_logic.entities.meals import CreateMealEntity, UpdateMealEntity
 from repositories.models import Meal
 
 
@@ -19,5 +19,9 @@ class MealsRepositoryInterface(ABC):
 
     @abstractmethod
     async def get_meal(self, meal_id: int) -> Meal:
+        pass
+
+    @abstractmethod
+    async def update_meal(self, meal: UpdateMealEntity) -> Meal:
         pass
 

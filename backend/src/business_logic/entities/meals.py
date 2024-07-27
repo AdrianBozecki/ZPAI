@@ -4,8 +4,7 @@ import logging
 
 from pydantic import BaseModel, Field
 
-from business_logic.entities.products import ProductEntity, CreateProductEntity
-from enums import UnitOfMeasureEnum
+from business_logic.entities.products import ProductEntity, CreateProductEntity, UpdateProductEntity
 from repositories.models import Meal
 logger = logging.getLogger("foo-logger")
 
@@ -19,7 +18,6 @@ class BaseMealEntity(BaseModel):
 
 class CreateMealEntity(BaseMealEntity):
     products: list[CreateProductEntity] = Field(default_factory=list)
-
 
 class MealEntity(BaseMealEntity):
     id: int  # noqa: A003
@@ -42,4 +40,14 @@ class MealEntity(BaseMealEntity):
             likes_count=len(meal.likes),
         )
 
+
+
+
+class UpdateMealEntity(BaseModel):
+    id: int | None = None
+    name: str | None = None
+    description: str | None = None
+    preparation: str | None = None
+    products: list[UpdateProductEntity] | None = None
+    category_ids: list[int] | None = None
 

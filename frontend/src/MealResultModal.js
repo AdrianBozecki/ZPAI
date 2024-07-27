@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './MealResultModal.module.css';
 
-function MealResultModal({ meal, onClose }) {
+function MealResultModal({ meal, onClose, openAddMealModal }) {
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -27,6 +27,11 @@ function MealResultModal({ meal, onClose }) {
           ))}
         </ul>
         <p>{meal.instructions}</p>
+        <button onClick={() => {
+          openAddMealModal(meal);
+          onClose();
+        }}>Save
+        </button>
         <button onClick={onClose}>Close</button>
       </div>
     </div>
