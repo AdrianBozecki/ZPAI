@@ -60,11 +60,12 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh}) {
             if (response.ok) {
                 alert('Meal added successfully!');
                 onMealsRefresh();
-                onClose(); // Zamknij modal
+                onClose();
             } else {
                 throw new Error('Failed to add new meal');
             }
         } catch (error) {
+            console.log(error);
             console.error('Error adding new meal:', error);
             alert('Failed to add new meal.');
         }

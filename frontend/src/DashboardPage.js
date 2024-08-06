@@ -4,6 +4,7 @@ import styles from './DashboardPage.module.css';
 import Modal from './Modal';
 import AddMealModal from './AddMealModal';
 import FindMealModal from './FindMealModal';
+import UpdateMealModal from "./UpdateMealModal";
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -17,6 +18,14 @@ function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFindMealModalOpen, setFindMealModalOpen] = useState(false);
   const [mealToAdd, setMealToAdd] = useState(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+const [mealToEdit, setMealToEdit] = useState(null);
+
+
+const handleEditClick = (meal) => {
+    setMealToEdit(meal);
+    setEditModalOpen(true);
+};
 
   const fetchProducts = () => {
     const token = localStorage.getItem('access_token');
@@ -182,9 +191,13 @@ function DashboardPage() {
 </section>
       </main>
 
-      {isModalOpen && selectedMeal && (
-        <Modal meal={selectedMeal} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
-      )}
+  {isModalOpen && selectedMeal && (
+      <Modal meal={selectedMeal} onEdit={handleEditClick} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
+  )}
+
+ {isEditModalOpen && mealToEdit && (
+    <UpdateMealModal mealToUpdate={mealToEdit} onClose={() => setEditModalOpen(false)} categories={categories} onMealsRefresh={refreshMeals}/>
+)}
 
 {isAddMealModalOpen && (
   <AddMealModal mealToAdd={mealToAdd} onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
