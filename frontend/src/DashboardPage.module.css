@@ -19,9 +19,9 @@ html, body {
 /* Header styles */
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; /* Align items to the left */
     align-items: center;
-    padding: 15px 30px; /* Większe wcięcia po bokach */
+    padding: 15px 30px;
     background-color: #6e8efb;
     color: white;
     border-bottom: 4px solid #6e8efb;
@@ -32,42 +32,49 @@ html, body {
     z-index: 1000;
 }
 
-.header h1 {
-    margin: 0;
+.title {
     font-size: 24px;
-    flex: 1; /* Pozwoli na zajęcie większej przestrzeni przez tytuł */
+    margin-right: auto; /* Pushes the title to the left */
+}
+
+.hamburger {
+    display: none; /* Hide hamburger menu in normal view */
+    position: absolute;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
 }
 
 .actions {
     display: flex;
-    align-items: center;
-    justify-content: flex-end; /* Wyrównanie elementów do prawej */
     gap: 10px;
-    flex: 2; /* Pozwala na dostosowanie szerokości sekcji */
 }
 
-.actions .form-control {
+.actions .search {
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    flex: 3; /* Większa szerokość dla search bara */
+    width: 30vw; /* Increase the width of the search bar */
     transition: box-shadow 0.3s ease;
 }
 
 .actions .form-control:focus {
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Podświetlenie na focus */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
     outline: none;
 }
 
 /* Custom styles for buttons */
 .findButton, .addButton, .settingsButton {
-    padding: 10px 15px; /* Zmniejszenie paddingu, aby zmieścić wszystko w jednej linii */
+    padding: 10px 15px;
     border: none;
-    border-radius: 8px; /* Lekko zaokrąglone rogi dla przycisków */
-    font-size: 14px; /* Zmniejszony font dla lepszego dopasowania */
+    border-radius: 8px;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    white-space: nowrap; /* Zapobiega łamaniu się tekstu w przyciskach */
+    white-space: nowrap;
 }
 
 .findButton, .addButton {
@@ -77,7 +84,7 @@ html, body {
 
 .findButton:hover, .addButton:hover {
     background-color: #2d6a9f;
-    transform: translateY(-2px); /* Efekt unoszenia przycisku */
+    transform: translateY(-2px);
 }
 
 .settingsButton {
@@ -87,22 +94,27 @@ html, body {
 
 .settingsButton:hover {
     background-color: #c12e2a;
-    transform: translateY(-2px); /* Efekt unoszenia przycisku */
+    transform: translateY(-2px);
 }
-
 
 /* Sidebar styles */
 .sidebar {
     width: 250px;
     background-color: #ffffff;
     border-right: 2px solid #e6e6e6;
-    padding: 40px 20px; /* Większa przerwa od góry */
-    height: 90vh; /* Adjusted to subtract header height and top padding */
+    padding: 40px 20px;
+    height: 90vh;
     position: fixed;
-    top: 10vh; /* Większa przerwa od nagłówka */
+    top: 10vh;
     left: 0;
     overflow-y: auto;
     width: 20vw;
+    transform: translateX(0); /* Ensure sidebar is visible in non-mobile view */
+    transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+    transform: translateX(0);
 }
 
 .navButton {
@@ -129,7 +141,7 @@ html, body {
     background-color: #ffffff;
     padding: 50px;
     box-sizing: border-box;
-    overflow-x: hidden; /* Hide any horizontal overflow */
+    overflow-x: hidden;
     height: 100vh;
     width: 80vw;
     margin-left: 20vw;
@@ -138,9 +150,9 @@ html, body {
 
 .meals {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    justify-content: center; /* Wycentrowanie kolumn w przestrzeni */
+    justify-content: center;
 }
 
 .mealCard {
@@ -151,8 +163,8 @@ html, body {
     text-align: center;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%; /* Aby kafelki były mniejsze */
-    max-width: 300px; /* Maksymalna szerokość kafelka */
+    width: 100%;
+    max-width: 300px;
 }
 
 .mealCard:hover {
@@ -207,22 +219,40 @@ html, body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hamburger {
+        display: block; /* Show hamburger menu in mobile view */
+    }
+
+    .actions {
+        display: none; /* Hide actions in mobile view */
+    }
+
     .sidebar {
         width: 100%;
-        position: relative;
+        position: fixed;
         height: auto;
         top: 0;
         border-right: none;
         border-bottom: 2px solid #e6e6e6;
+        transform: translateX(-100%); /* Hide sidebar in mobile view */
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
     }
 
     .content {
         margin-left: 0;
         padding: 15px;
-        padding-top: 144px; /* Większa przerwa od nagłówka */
+        padding-top: 144px;
     }
 
     .meals {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: 1fr;
     }
 }

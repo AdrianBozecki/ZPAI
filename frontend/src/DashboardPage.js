@@ -6,6 +6,7 @@ import AddMealModal from './AddMealModal';
 import FindMealModal from './FindMealModal';
 import UpdateMealModal from "./UpdateMealModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaBars } from 'react-icons/fa'; // Importing icons for hamburger menu
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function DashboardPage() {
   const [mealToAdd, setMealToAdd] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [mealToEdit, setMealToEdit] = useState(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false); // State for sidebar visibility
 
   const handleEditClick = (meal) => {
     setMealToEdit(meal);
@@ -146,45 +148,48 @@ function DashboardPage() {
     return <div>Loading...</div>;
   }
 
-return (
+  return (
     <div className={`container-fluid ${styles.dashboard}`}>
-        <header className={`${styles.header}`}>
-            <h1>MealFuel</h1>
-            <div className={`${styles.actions}`}>
-                <button className={`btn btn-primary ${styles.findButton}`} onClick={openFindMealModal}>find Meal</button>
-                <button className={`btn btn-primary ${styles.addButton}`} onClick={openAddMealModal}>+ add meal</button>
-                <input
-                    className={`form-control ${styles.search}`}
-                    placeholder="search meal"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                />
-                <button className={`btn btn-danger ${styles.settingsButton}`} onClick={handleLogout}>logout</button>
-            </div>
-        </header>
+      <header className={`${styles.header}`}>
+        <button className={styles.hamburger} onClick={() => setSidebarOpen(!isSidebarOpen)}>
+          <FaBars />
+        </button>
+        <h1 className={styles.title}>MealFuel</h1>
+        <div className={styles.actions}>
+          <button className={`btn btn-primary ${styles.findButton}`} onClick={openFindMealModal}>find meal</button>
+          <button className={`btn btn-primary ${styles.addButton}`} onClick={openAddMealModal}>+ add meal</button>
+          <input
+              className={`form-control ${styles.search}`}
+              placeholder="search meal"
+              value={searchQuery}
+              onChange={handleSearchChange}
+          />
+          <button className={`btn btn-danger ${styles.settingsButton}`} onClick={handleLogout}>logout</button>
+        </div>
+      </header>
 
-        <div className="row">
-            <aside className={`${styles.sidebar}`}>
-                <nav className={styles.nav}>
-                    <button className={`btn btn-light ${styles.navButton}`} onClick={() => fetchMeals()}>all</button>
-                    {categories.map((category) => (
-                        <button key={category.id} className={`btn btn-light ${styles.navButton}`} onClick={() => fetchMeals(category.id)}>
-                            {category.name}
-                        </button>
-                    ))}
-                </nav>
-            </aside>
+      <div className="row">
+        <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}>
+          <nav className={styles.nav}>
+            <button className={`btn btn-light ${styles.navButton}`} onClick={() => fetchMeals()}>all</button>
+            {categories.map((category) => (
+              <button key={category.id} className={`btn btn-light ${styles.navButton}`} onClick={() => fetchMeals(category.id)}>
+                {category.name}
+              </button>
+            ))}
+          </nav>
+        </aside>
 
-            <main className={`${styles.content}`}>
-                <section className={styles.meals}>
-                    {meals.map((meal, index) => (
-                        <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
-                            <img src={meal.image_url || "/img/placeholder.png"} alt="Meal" className={styles.mealImage}/>
-                            {meal.name}
-                        </div>
-                    ))}
-                </section>
-            </main>
+        <main className={`${styles.content}`}>
+          <section className={styles.meals}>
+            {meals.map((meal, index) => (
+              <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
+                <img src={meal.image_url || "/img/placeholder.png"} alt="Meal" className={styles.mealImage}/>
+                {meal.name}
+              </div>
+            ))}
+          </section>
+        </main>
       </div>
 
       {isModalOpen && selectedMeal && (
