@@ -5,6 +5,7 @@ import Modal from './Modal';
 import AddMealModal from './AddMealModal';
 import FindMealModal from './FindMealModal';
 import UpdateMealModal from "./UpdateMealModal";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -19,18 +20,17 @@ function DashboardPage() {
   const [isFindMealModalOpen, setFindMealModalOpen] = useState(false);
   const [mealToAdd, setMealToAdd] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-const [mealToEdit, setMealToEdit] = useState(null);
+  const [mealToEdit, setMealToEdit] = useState(null);
 
-
-const handleEditClick = (meal) => {
+  const handleEditClick = (meal) => {
     setMealToEdit(meal);
     setEditModalOpen(true);
-};
+  };
 
   const fetchProducts = () => {
     const token = localStorage.getItem('access_token');
     const user_id = localStorage.getItem('user_id');
-    
+
     fetch('http://localhost:8000/products', {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -47,7 +47,7 @@ const handleEditClick = (meal) => {
     const token = localStorage.getItem('access_token');
     const user_id = localStorage.getItem('user_id');
     let url = 'http://localhost:8000/meals';
-  
+
     const params = new URLSearchParams();
     if (categoryId) {
       params.append('category_id', categoryId);
@@ -56,7 +56,7 @@ const handleEditClick = (meal) => {
       params.append('name', searchQuery);
     }
     url += `?${params.toString()}`;
-  
+
     fetch(url, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -68,8 +68,9 @@ const handleEditClick = (meal) => {
     .then(data => setMeals(data))
     .catch(error => console.error('Error fetching meals', error));
   };
+
   const refreshMeals = () => {
-    fetchMeals(); // funkcja, którą już masz zdefiniowaną do pobierania posiłków
+    fetchMeals();
   };
 
   const handleSearchChange = (e) => {
@@ -83,7 +84,7 @@ const handleEditClick = (meal) => {
       alert('Unauthorized: No token provided');
       navigate('/');
     } else {
-      setIsLoading(true); // Aktualizacja stanu, nawet jeśli brakuje tokena
+      setIsLoading(true);
       Promise.all([
         fetch('http://localhost:8000/categories', {
           headers: {
@@ -98,7 +99,7 @@ const handleEditClick = (meal) => {
         setCategories(categoriesData)
       }).catch(error => {
         console.error('Error fetching data', error);
-        setIsLoading(false); // Aktualizacja stanu również w przypadku błędu
+        setIsLoading(false);
       });
     }
   }, [navigate]);
@@ -107,7 +108,7 @@ const handleEditClick = (meal) => {
     const delayDebounce = setTimeout(() => {
       fetchMeals(null, searchQuery);
     }, 500);
-  
+
     return () => clearTimeout(delayDebounce);
   }, [searchQuery]);
 
@@ -129,82 +130,78 @@ const handleEditClick = (meal) => {
   };
 
   const openFindMealModal = () => {
-  setFindMealModalOpen(true);
-};
-
-  const closeFindMealModal = () => {
-  setFindMealModalOpen(false);
-};
-
-  const handleLogout = () => {
-    localStorage.clear(); // Czyści cały localStorage
-    navigate('/'); // Przekierowuje na stronę główną
+    setFindMealModalOpen(true);
   };
 
+  const closeFindMealModal = () => {
+    setFindMealModalOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
 
   if (!isLoading) {
-    return <div>Loading...</div>; // Wyświetlenie informacji o ładowaniu, gdy dane są jeszcze pobierane
+    return <div>Loading...</div>;
   }
 
-  return (
-    <div className={styles.dashboard}>
-        
-      <header className={styles.header}>
-        <h1>MealFuel</h1>
-        <div className={styles.actions}>
-          <button className={styles.findButton} onClick={openFindMealModal}>Find Meal</button>
-          <button className={styles.addButton} onClick={openAddMealModal}>+ add meal</button>
-          <input
-              className={styles.search}
-              placeholder="search meal"
-              value={searchQuery}
-              onChange={handleSearchChange}
-          />
-          <button className={styles.settingsButton} onClick={handleLogout}>logout</button>
+return (
+    <div className={`container-fluid ${styles.dashboard}`}>
+        <header className={`${styles.header}`}>
+            <h1>MealFuel</h1>
+            <div className={`${styles.actions}`}>
+                <button className={`btn btn-primary ${styles.findButton}`} onClick={openFindMealModal}>find Meal</button>
+                <button className={`btn btn-primary ${styles.addButton}`} onClick={openAddMealModal}>+ add meal</button>
+                <input
+                    className={`form-control ${styles.search}`}
+                    placeholder="search meal"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+                <button className={`btn btn-danger ${styles.settingsButton}`} onClick={handleLogout}>logout</button>
+            </div>
+        </header>
 
-        </div>
-      </header>
+        <div className="row">
+            <aside className={`${styles.sidebar}`}>
+                <nav className={styles.nav}>
+                    <button className={`btn btn-light ${styles.navButton}`} onClick={() => fetchMeals()}>all</button>
+                    {categories.map((category) => (
+                        <button key={category.id} className={`btn btn-light ${styles.navButton}`} onClick={() => fetchMeals(category.id)}>
+                            {category.name}
+                        </button>
+                    ))}
+                </nav>
+            </aside>
 
-      <aside className={styles.sidebar}>
-        <nav className={styles.nav}>
-          <button className={styles.navButton} onClick={() => fetchMeals()}>all</button>
-          {categories.map((category) => (
-            <button key={category.id} className={styles.navButton} onClick={() => fetchMeals(category.id)}>
-              {category.name}
-            </button>
-          ))}
-        </nav>
-      </aside>
+            <main className={`${styles.content}`}>
+                <section className={styles.meals}>
+                    {meals.map((meal, index) => (
+                        <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
+                            <img src={meal.image_url || "/img/placeholder.png"} alt="Meal" className={styles.mealImage}/>
+                            {meal.name}
+                        </div>
+                    ))}
+                </section>
+            </main>
+      </div>
 
-      <main className={styles.content}>
-      <section className={styles.meals}>
-  {meals.map((meal, index) => (
-    <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
-      <img
-        src="/img/placeholder.png"
-        alt="Meal"
-        className={styles.mealImage} // Dodaj klasę dla stylizacji obrazka
-      />
-      {meal.name}
-    </div>
-  ))}
-</section>
-      </main>
+      {isModalOpen && selectedMeal && (
+        <Modal meal={selectedMeal} onEdit={handleEditClick} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
+      )}
 
-  {isModalOpen && selectedMeal && (
-      <Modal meal={selectedMeal} onEdit={handleEditClick} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
-  )}
+      {isEditModalOpen && mealToEdit && (
+        <UpdateMealModal mealToUpdate={mealToEdit} onClose={() => setEditModalOpen(false)} categories={categories} onMealsRefresh={refreshMeals}/>
+      )}
 
- {isEditModalOpen && mealToEdit && (
-    <UpdateMealModal mealToUpdate={mealToEdit} onClose={() => setEditModalOpen(false)} categories={categories} onMealsRefresh={refreshMeals}/>
-)}
-
-{isAddMealModalOpen && (
-  <AddMealModal mealToAdd={mealToAdd} onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
-)}
+      {isAddMealModalOpen && (
+        <AddMealModal mealToAdd={mealToAdd} onClose={closeAddMealModal} categories={categories} products={products} onProductsUpdated={fetchProducts} onMealsRefresh={refreshMeals}/>
+      )}
 
       {isFindMealModalOpen && (
-<FindMealModal onClose={closeFindMealModal} setAddMealModalOpen={setAddMealModalOpen} setMealToAdd={setMealToAdd} />)}
+        <FindMealModal onClose={closeFindMealModal} setAddMealModalOpen={setAddMealModalOpen} setMealToAdd={setMealToAdd} />
+      )}
     </div>
   );
 }

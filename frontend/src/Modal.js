@@ -55,16 +55,15 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'User_id': user_id,
                     },
                 });
 
                 if (response.ok) {
+                    alert('Meal deleted successfully!');
                     onMealsRefresh();
                     onClose();
                 } else {
-                    console.error('Failed to delete meal');
+                    throw new Error('Failed to delete meal');
                 }
             } catch (error) {
                 console.error('There was an error deleting the meal:', error);
@@ -102,19 +101,16 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
             const response = await fetch('http://localhost:8000/comments', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                    'User_id': user_id,
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(payload),
             });
 
             if (response.ok) {
-                alert('Comment added successfully!');
-                setCommentContent('');
-                onMealsRefresh();
                 const newComment = await response.json();
                 setComments([...comments, newComment]);
+                setCommentContent('');
             } else {
                 throw new Error('Failed to add comment');
             }
@@ -132,9 +128,8 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
             const response = await fetch('http://localhost:8000/likes', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                    'User_id': user_id,
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ user_id: Number(user_id), meal_id: meal.id }),
             });
@@ -142,7 +137,6 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
             if (response.ok) {
                 setLikesCount(likesCount + 1);
                 setUserLiked(true);
-                onMealsRefresh(); // Refresh meal data
             } else {
                 throw new Error('Failed to like meal');
             }
@@ -161,15 +155,12 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                    'User_id': user_id,
                 },
             });
 
             if (response.ok) {
                 setLikesCount(likesCount - 1);
                 setUserLiked(false);
-                onMealsRefresh(); // Refresh meal data
             } else {
                 throw new Error('Failed to unlike meal');
             }
@@ -185,7 +176,7 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
         <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
             <div className={styles.modalContent}>
                 <h2>{meal.name}</h2>
-                <img src="/img/placeholder.png" alt="Meal"/>
+                <img src={meal.image_url || "/img/placeholder.png"} alt="Meal"/>
                 <p><b>description:</b> {meal.description}</p>
                 <p><b>categories:</b> {categoryNames.join(', ')}</p>
                 <p><b>products:</b></p>

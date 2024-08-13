@@ -44,6 +44,7 @@ class Meal(Base):
     description: Mapped[str] = mapped_column(String)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     preparation: Mapped[str] = mapped_column(String)
+    image_url: Mapped[str] = mapped_column(String, nullable=True)
 
     user = relationship("User", back_populates="meals")
     category = relationship("Category", secondary=meal_category_association, back_populates="meals")

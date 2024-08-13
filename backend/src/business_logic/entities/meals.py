@@ -15,6 +15,7 @@ class BaseMealEntity(BaseModel):
     category_ids: list[int] = Field(default_factory=list)
     preparation: str | None = None
     user_id: int
+    image_url: str | None = None
 
 class CreateMealEntity(BaseMealEntity):
     products: list[CreateProductEntity] = Field(default_factory=list)
@@ -39,7 +40,8 @@ class MealEntity(BaseMealEntity):
             products=meal.products,
             category_ids=[category.id for category in meal.category],
             likes_count=len(meal.likes),
-            liked_by=[like.user_id for like in meal.likes]
+            liked_by=[like.user_id for like in meal.likes],
+            image_url=meal.image_url,
         )
 
 

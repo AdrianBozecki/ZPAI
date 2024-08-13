@@ -47,6 +47,7 @@ class MealsRepository(MealsRepositoryInterface):
             description=meal.description,
             user_id=meal.user_id,
             preparation=meal.preparation,
+            image_url=meal.image_url
         )
 
         self.db.add(new_meal)
