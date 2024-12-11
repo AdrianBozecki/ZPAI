@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './AddMealModal.module.css';
 
 function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
@@ -9,7 +9,13 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
     const [mealName, setMealName] = useState(mealToAdd ? mealToAdd.name : '');
     const [mealDescription, setMealDescription] = useState(mealToAdd ? mealToAdd.description : '');
     const [mealPreparation, setMealPreparation] = useState(mealToAdd ? mealToAdd.preparation : '');
-    const [mealImage, setMealImage] = useState(null);
+    const [mealImage, setMealImage] = useState(mealToAdd ? mealToAdd.image : null);
+
+    useEffect(() => {
+        if (mealToAdd && mealToAdd.image) {
+            setMealImage(mealToAdd.image);
+        }
+    }, [mealToAdd]);
 
     const handleBackdropClick = (event) => {
         if (event.target === event.currentTarget) {
@@ -62,6 +68,8 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
             payload.append('image', mealImage);
         }
 
+        console.log('meal.image:', mealImage); // Add this line to log meal.image
+
         const options = {
             method: 'POST',
             headers: {
@@ -100,15 +108,17 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
                 <form onSubmit={handleAddMeal}>
                     <label>
                         Name:
-                        <input type="text" value={mealName} onChange={(e) => setMealName(e.target.value)} required />
+                        <input type="text" value={mealName} onChange={(e) => setMealName(e.target.value)} required/>
                     </label>
                     <label>
                         Description:
-                        <textarea value={mealDescription} onChange={(e) => setMealDescription(e.target.value)} required />
+                        <textarea value={mealDescription} onChange={(e) => setMealDescription(e.target.value)}
+                                  required/>
                     </label>
                     <label>
                         Preparation:
-                        <textarea value={mealPreparation} onChange={(e) => setMealPreparation(e.target.value)} required />
+                        <textarea value={mealPreparation} onChange={(e) => setMealPreparation(e.target.value)}
+                                  required/>
                     </label>
                     <label>
                         Categories:
@@ -122,9 +132,14 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
                         Products:
                         {selectedProducts.map((product, index) => (
                             <div key={index}>
-                                <input type="text" value={product.name} onChange={(e) => handleProductChange(index, 'name', e)} placeholder="Product Name" required />
-                                <input type="number" value={product.value} onChange={(e) => handleProductChange(index, 'value', e)} placeholder="Value" required />
-                                <select value={product.unit_of_measure} onChange={(e) => handleProductChange(index, 'unit_of_measure', e)}>
+                                <input type="text" value={product.name}
+                                       onChange={(e) => handleProductChange(index, 'name', e)}
+                                       placeholder="Product Name" required/>
+                                <input type="number" value={product.value}
+                                       onChange={(e) => handleProductChange(index, 'value', e)} placeholder="Value"
+                                       required/>
+                                <select value={product.unit_of_measure}
+                                        onChange={(e) => handleProductChange(index, 'unit_of_measure', e)}>
                                     {unitsOfMeasure.map(unit => (
                                         <option key={unit} value={unit}>{unit}</option>
                                     ))}
@@ -132,15 +147,18 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
                                 <button type="button" onClick={() => removeProduct(index)}>Remove</button>
                             </div>
                         ))}
-                        <button type="button" onClick={addProduct}>Add Product</button>
+                        <button type="button" onClick={addProduct}>Add next product</button>
                     </label>
                     <label>
                         Image:
-                        <input type="file" onChange={(e) => setMealImage(e.target.files[0])} />
+                        <input type="file" onChange={(e) => setMealImage(e.target.files[0])}/>
+                        {mealImage && typeof mealImage === 'string' && (
+                            <img src={mealImage} alt="Meal" style={{ width: '100px', height: '100px', marginTop: '10px' }} />
+                        )}
                     </label>
                     <button type="submit">Add Meal</button>
                 </form>
-                <button onClick={onClose}>Close</button>
+                <button className={styles.fullWidthNavyButton} onClick={onClose}>Close</button>
             </div>
         </div>
     );

@@ -28,6 +28,7 @@ function MealResultModal({ meal, onClose, openAddMealModal }) {
         </ul>
         <p>{meal.instructions}</p>
         <button className={styles.paddedButton} onClick={() => {
+          console.log(meal);
           openAddMealModal(meal);
           onClose();
         }}>Save

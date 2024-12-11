@@ -60,7 +60,7 @@ class MealsCBV:
             user_id: int = Form(...),
             category_ids: str = Form(...),
             products: str = Form(...),
-            image: UploadFile = File(None)
+            image: UploadFile | str = File(None)
     ) -> None:
         try:
             category_ids_list = json.loads(category_ids)
@@ -80,7 +80,7 @@ class MealsCBV:
         logger.info(f"Creating meal: {meal_entity}")
         image_url = None
         if image:
-            if image is not str:
+            if not isinstance(image, str):
                 image_url = upload_image(image.file)
             else:
                 image_url = image

@@ -50,6 +50,7 @@ function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
       value: ingredient.amount,
       unit_of_measure: 'PIECE',
     })),
+    image: meal.image,
   };
   setMealToAdd(mealToAdd);
   setAddMealModalOpen(true);

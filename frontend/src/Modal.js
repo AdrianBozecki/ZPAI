@@ -186,27 +186,8 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
                         <p key={product.name}> {product.name} {product.value} {unit}</p>
                     );
                 })}
-                <p><b>preparation:</b> <div style={{ whiteSpace: 'pre-wrap' }}>{meal.preparation}</div></p>
-                <p><b>created by user:</b> {meal.user_id}</p>
-                <div className={styles.exportSection}>
-                    <div>
-                        <label>
-                            <input type="radio" value="METRIC" checked={unitSystem === 'METRIC'} onChange={() => setUnitSystem('METRIC')} />
-                            Metric
-                        </label>
-                        <label>
-                            <input type="radio" value="IMPERIAL" checked={unitSystem === 'IMPERIAL'} onChange={() => setUnitSystem('IMPERIAL')} />
-                            Imperial
-                        </label>
-                    </div>
-                    <button onClick={handleExport}>Export Shopping List</button>
-                </div>
-                {localUserId === meal.user_id.toString() && (
-                    <button onClick={handleDelete}>Delete</button>
-                )}
-                {localUserId === meal.user_id.toString() && (
-                    <button onClick={handleEdit}>Edit</button>
-                )}
+                <p><b>preparation:</b>
+                    <div style={{whiteSpace: 'pre-wrap'}}>{meal.preparation}</div>
                 <div className={styles.commentSection}>
                     <input
                         type="text"
@@ -227,12 +208,39 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
                 <div className={styles.likesSection}>
                     <p><b>Likes:</b> {likesCount}</p>
                     {userLiked ? (
-                        <button onClick={handleUnlike}>Unlike</button>
+                        <button onClick={handleUnlike}>Dislike</button>
                     ) : (
                         <button onClick={handleLike}>Like</button>
                     )}
                 </div>
-                <button onClick={onClose}>Close</button>
+                <p><b>created by user:</b> {meal.user_id}</p>
+                <div className={styles.exportSection}>
+                    <div>
+                        <label>
+                            <input type="radio" value="METRIC" checked={unitSystem === 'METRIC'}
+                                   onChange={() => setUnitSystem('METRIC')}/>
+                            Metric
+                        </label>
+                        <label>
+                            <input type="radio" value="IMPERIAL" checked={unitSystem === 'IMPERIAL'}
+                                   onChange={() => setUnitSystem('IMPERIAL')}/>
+                            Imperial
+                        </label>
+                    </div>
+                    <button onClick={handleExport}>Export Shopping List</button>
+                </div>
+                                    </p>
+                {localUserId === meal.user_id.toString() && (
+                    <button onClick={handleDelete}>Delete</button>
+                )}
+                {localUserId === meal.user_id.toString() && (
+                    <button onClick={handleEdit}>Edit</button>
+                )}
+                <button onClick={() => {
+                    onClose();
+                    window.location.reload();
+                }}>Close
+                </button>
             </div>
         </div>
     );

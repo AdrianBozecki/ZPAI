@@ -186,17 +186,22 @@ function DashboardPage() {
         <main className={`${styles.content}`}>
           <section className={styles.meals}>
             {meals.map((meal, index) => (
-              <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
-                <img src={meal.image_url || "/img/placeholder.png"} alt="Meal" className={styles.mealImage}/>
-                {meal.name}
-              </div>
+                <div key={index} className={styles.mealCard} onClick={() => handleMealClick(meal)}>
+                  <div className={styles.imageContainer}>
+                    <img src={meal.image_url || "/img/placeholder.png"} alt="Meal" className={styles.mealImage}/>
+                  </div>
+                  <div className={styles.mealName}>
+                    {meal.name}
+                  </div>
+                </div>
             ))}
           </section>
         </main>
       </div>
 
       {isModalOpen && selectedMeal && (
-        <Modal meal={selectedMeal} onEdit={handleEditClick} onClose={closeModal} categories={categories} products={products} onMealsRefresh={refreshMeals}/>
+          <Modal meal={selectedMeal} onEdit={handleEditClick} onClose={closeModal} categories={categories}
+                 products={products} onMealsRefresh={refreshMeals}/>
       )}
 
       {isEditModalOpen && mealToEdit && (
