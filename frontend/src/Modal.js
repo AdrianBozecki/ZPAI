@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Modal.module.css';
-import UpdateMealModal from "./UpdateMealModal";
 
 function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
     const localUserId = localStorage.getItem('user_id');
@@ -59,11 +58,10 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
                 });
 
                 if (response.ok) {
-                    alert('Meal deleted successfully!');
                     onMealsRefresh();
                     onClose();
                 } else {
-                    throw new Error('Failed to delete meal');
+                    alert('Failed to delete meal.');
                 }
             } catch (error) {
                 console.error('There was an error deleting the meal:', error);
@@ -188,59 +186,58 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
                 })}
                 <p><b>preparation:</b>
                     <div style={{whiteSpace: 'pre-wrap'}}>{meal.preparation}</div>
-                <div className={styles.commentSection}>
-                    <input
-                        type="text"
-                        placeholder="Add a comment"
-                        value={commentContent}
-                        onChange={(e) => setCommentContent(e.target.value)}
-                    />
-                    <button onClick={handleAddComment}>Add</button>
-                </div>
-                <div className={styles.commentsList}>
-                    {comments.map(comment => (
-                        <div key={comment.id} className={styles.comment}>
-                            <p><b>{comment.user.name} {comment.user.lastname}:</b> {comment.content}</p>
-                            <p><i>{new Date(comment.created_at).toLocaleString()}</i></p>
-                        </div>
-                    ))}
-                </div>
+                </p>
                 <div className={styles.likesSection}>
                     <p><b>Likes:</b> {likesCount}</p>
                     {userLiked ? (
-                        <button onClick={handleUnlike}>Dislike</button>
+                        <button onClick={handleUnlike} className={styles.likeButton}>Unlike</button>
                     ) : (
-                        <button onClick={handleLike}>Like</button>
+                        <button onClick={handleLike} className={styles.likeButton}>Like</button>
                     )}
                 </div>
                 <p><b>created by user:</b> {meal.user_id}</p>
                 <div className={styles.exportSection}>
                     <div>
                         <label>
-                            <input type="radio" value="METRIC" checked={unitSystem === 'METRIC'}
-                                   onChange={() => setUnitSystem('METRIC')}/>
-                            Metric
-                        </label>
-                        <label>
-                            <input type="radio" value="IMPERIAL" checked={unitSystem === 'IMPERIAL'}
-                                   onChange={() => setUnitSystem('IMPERIAL')}/>
-                            Imperial
+                            Unit System:
+                            <select value={unitSystem} onChange={(e) => setUnitSystem(e.target.value)}>
+                                <option value="METRIC">Metric</option>
+                                <option value="IMPERIAL">Imperial</option>
+                            </select>
                         </label>
                     </div>
-                    <button onClick={handleExport}>Export Shopping List</button>
+                    <button onClick={handleExport} className={styles.exportButton}>Export Shopping List</button>
                 </div>
-                                    </p>
                 {localUserId === meal.user_id.toString() && (
-                    <button onClick={handleDelete}>Delete</button>
+                    <button onClick={handleDelete} className={styles.deleteButton}>Delete</button>
                 )}
                 {localUserId === meal.user_id.toString() && (
-                    <button onClick={handleEdit}>Edit</button>
+                    <button onClick={handleEdit} className={styles.editButton}>Edit</button>
                 )}
                 <button onClick={() => {
                     onClose();
                     window.location.reload();
-                }}>Close
+                }} className={styles.closeButton}>Close
                 </button>
+                <div className={styles.commentSection}>
+                    <input
+                        type="text"
+                        placeholder="Add a comment"
+                        value={commentContent}
+                        onChange={(e) => setCommentContent(e.target.value)}
+                        className={styles.commentInput}
+                    />
+                    <button onClick={handleAddComment} className={styles.addButton}>Add</button>
+                </div>
+
+                <div className={styles.commentsList}>
+                    {comments.map(comment => (
+                        <div key={comment.id} className={styles.comment}>
+                            <p>{comment.content}</p>
+                            <p><i>{new Date(comment.created_at).toLocaleString()}</i></p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
