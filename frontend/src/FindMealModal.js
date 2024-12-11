@@ -77,7 +77,7 @@ function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
             </li>
           ))}
         </ul>
-        <button onClick={handleFindMeal}>Find Meal</button>
+        <button className={styles.findMealButton} onClick={handleFindMeal}>Find Meal</button>
       </div>
         {mealResult && (
           <MealResultModal meal={mealResult} onClose={closeMealResultModal} openAddMealModal={openAddMealModal} />

@@ -67,7 +67,10 @@ function DashboardPage() {
       }
     })
     .then(response => response.json())
-    .then(data => setMeals(data))
+    .then(data => {
+      setMeals(data);
+      setSidebarOpen(false); // Hide sidebar after selecting a category
+    })
     .catch(error => console.error('Error fetching meals', error));
   };
 

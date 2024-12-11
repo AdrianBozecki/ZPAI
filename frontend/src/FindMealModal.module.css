@@ -80,6 +80,18 @@
   background-color: #c82333;
 }
 
+.findMealButton {
+  width: 100%; /* Make the button span the full width */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0056b3; /* Darker blue color */
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
 @media (max-width: 415px) {
   .modalContent {
     width: 90%;

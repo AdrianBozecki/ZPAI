@@ -27,12 +27,12 @@ function MealResultModal({ meal, onClose, openAddMealModal }) {
           ))}
         </ul>
         <p>{meal.instructions}</p>
-        <button onClick={() => {
+        <button className={styles.paddedButton} onClick={() => {
           openAddMealModal(meal);
           onClose();
         }}>Save
         </button>
-        <button onClick={onClose}>Close</button>
+        <button className={styles.paddedButton} onClick={onClose}>Close</button>
       </div>
     </div>
   );

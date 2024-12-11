@@ -23,6 +23,11 @@
   overflow-y: auto;
 }
 
+.paddedButton {
+  margin: 0px 10px; /* Add desired padding */
+}
+
+
 .modalContent h3 {
   margin-bottom: 20px;
 }
