@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styles from './FindMealModal.module.css';
 import MealResultModal from './MealResultModal';
+import { makeRequest } from './utils'; // Adjust the import path as needed
 
-function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
+function FindMealModal({ onClose, setAddMealModalOpen, setMealToAdd }) {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState('');
   const [mealResult, setMealResult] = useState(null);
@@ -31,9 +32,19 @@ function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
 
   const handleFindMeal = async () => {
     const ingredients = products.join(',');
-    const response = await fetch(`http://localhost:8000/spooncular-meals/find-by-ingredients?ingredients=${ingredients}`);
-    const data = await response.json();
-    setMealResult(data);
+    const url = `http://localhost:8000/spooncular-meals/find-by-ingredients?ingredients=${ingredients}`;
+    try {
+      const response = await makeRequest(url);
+      if (response.ok) {
+        const data = await response.json();
+        setMealResult(data);
+      } else {
+        throw new Error('Failed to find meal');
+      }
+    } catch (error) {
+      console.error('Error finding meal:', error);
+      alert('Failed to find meal.');
+    }
   };
 
   const closeMealResultModal = () => {
@@ -41,21 +52,21 @@ function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
   };
 
   const openAddMealModal = (meal) => {
-  const mealToAdd = {
-    name: meal.title,
-    description: meal.summary.replace(/<[^>]*>/g, ''),
-    preparation: meal.instructions.replace(/<[^>]*>/g, ''),
-    products: [...meal.used_ingredients, ...meal.missed_ingredients].map(ingredient => ({
-      name: ingredient.name,
-      value: ingredient.amount,
-      unit_of_measure: 'PIECE',
-    })),
-    image: meal.image,
+    const mealToAdd = {
+      name: meal.title,
+      description: meal.summary.replace(/<[^>]*>/g, ''),
+      preparation: meal.instructions.replace(/<[^>]*>/g, ''),
+      products: [...meal.used_ingredients, ...meal.missed_ingredients].map(ingredient => ({
+        name: ingredient.name,
+        value: ingredient.amount,
+        unit_of_measure: 'PIECE',
+      })),
+      image: meal.image,
+    };
+    setMealToAdd(mealToAdd);
+    setAddMealModalOpen(true);
+    onClose();
   };
-  setMealToAdd(mealToAdd);
-  setAddMealModalOpen(true);
-  onClose();
-};
 
   return (
     <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
@@ -80,9 +91,9 @@ function FindMealModal({ onClose , setAddMealModalOpen, setMealToAdd}) {
         </ul>
         <button className={styles.findMealButton} onClick={handleFindMeal}>Find Meal</button>
       </div>
-        {mealResult && (
-          <MealResultModal meal={mealResult} onClose={closeMealResultModal} openAddMealModal={openAddMealModal} />
-        )}
+      {mealResult && (
+        <MealResultModal meal={mealResult} onClose={closeMealResultModal} openAddMealModal={openAddMealModal} />
+      )}
     </div>
   );
 }

@@ -27,3 +27,12 @@ class LoginUserUseCase:
     async def execute(self, email: str, password: str) -> UserLoginEntity:
         meals = await self.repo.login_user(email, password)
         return meals
+
+
+class RefreshTokenUseCase:
+    def __init__(self, repo: UsersRepositoryInterface):
+        self.repo = repo
+
+    async def execute(self, refresh_token: str) -> UserLoginEntity:
+        meals = await self.repo.refresh_token(refresh_token)
+        return meals

@@ -7,6 +7,7 @@ import FindMealModal from './FindMealModal';
 import UpdateMealModal from "./UpdateMealModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaBars } from 'react-icons/fa'; // Importing icons for hamburger menu
+import { makeRequest } from './utils';
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -29,24 +30,23 @@ function DashboardPage() {
     setEditModalOpen(true);
   };
 
-  const fetchProducts = () => {
-    const token = localStorage.getItem('access_token');
+  const fetchProducts = async () => {
     const user_id = localStorage.getItem('user_id');
-
-    fetch('http://localhost:8000/products', {
+    const response = await makeRequest('http://localhost:8000/products', {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
         'User_Id': user_id,
-      }
-    })
-    .then(response => response.json())
-    .then(data => setProducts(data))
-    .catch(error => console.error('Error fetching products', error));
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setProducts(data);
+    } else {
+      console.error('Error fetching products', response.statusText);
+    }
   };
 
-  const fetchMeals = (categoryId = null, searchQuery = '') => {
-    const token = localStorage.getItem('access_token');
+  const fetchMeals = async (categoryId = null, searchQuery = '') => {
     const user_id = localStorage.getItem('user_id');
     let url = 'http://localhost:8000/meals';
 
@@ -59,20 +59,20 @@ function DashboardPage() {
     }
     url += `?${params.toString()}`;
 
-    fetch(url, {
+    const response = await makeRequest(url, {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
         'User_Id': user_id,
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
       setMeals(data);
       setSidebarOpen(false); // Hide sidebar after selecting a category
-    })
-    .catch(error => console.error('Error fetching meals', error));
-  };
+    } else {
+      console.error('Error fetching meals', response.statusText);
+    }
+};
 
   const refreshMeals = () => {
     fetchMeals();

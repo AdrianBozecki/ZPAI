@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AddMealModal.module.css';
+import { makeRequest } from './utils'; // Adjust the import path as needed
 
 function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
     const unitsOfMeasure = ['GRAM', 'KILOGRAM', 'MILLILITER', 'LITER', 'PIECE', 'OUNCE', 'POUND', 'PINT', 'QUART', 'GALLON', 'TEASPOON', 'TABLESPOON', 'CUP'];
@@ -54,7 +55,6 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
     const handleAddMeal = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem('access_token');
         const user_id = localStorage.getItem('user_id');
 
         const payload = new FormData();
@@ -72,14 +72,11 @@ function AddMealModal({ mealToAdd, onClose, categories, onMealsRefresh }) {
 
         const options = {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
             body: payload,
         };
 
         try {
-            const response = await fetch('http://localhost:8000/meals', options);
+            const response = await makeRequest('http://localhost:8000/meals', options);
             logRequestResponse('http://localhost:8000/meals', options, response);
 
             if (response.ok) {

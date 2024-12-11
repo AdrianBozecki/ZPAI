@@ -31,6 +31,7 @@ function LoginPage() {
       if (response.ok) {
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('token_type', data.token_type);
+        localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('user_id', data.user_id);
 
         navigate('/dashboard');

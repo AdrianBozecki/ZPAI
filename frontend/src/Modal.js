@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Modal.module.css';
+import { makeRequest } from './utils'; // Adjust the import path as needed
 
 function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
     const localUserId = localStorage.getItem('user_id');
@@ -12,7 +13,7 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/comments?meal_id=${meal.id}`);
+                const response = await makeRequest(`http://localhost:8000/comments?meal_id=${meal.id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setComments(data);
@@ -50,7 +51,7 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
 
         if (meal.user_id.toString() === user_id) {
             try {
-                const response = await fetch(`http://localhost:8000/meals/${meal.id}`, {
+                const response = await makeRequest(`http://localhost:8000/meals/${meal.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -96,7 +97,7 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/comments', {
+            const response = await makeRequest('http://localhost:8000/comments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,7 +124,7 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
         const user_id = localStorage.getItem('user_id');
 
         try {
-            const response = await fetch('http://localhost:8000/likes', {
+            const response = await makeRequest('http://localhost:8000/likes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,7 +150,7 @@ function Modal({ meal, onEdit, onClose, categories, onMealsRefresh }) {
         const user_id = localStorage.getItem('user_id');
 
         try {
-            const response = await fetch(`http://localhost:8000/likes/${user_id}/${meal.id}`, {
+            const response = await makeRequest(`http://localhost:8000/likes/${user_id}/${meal.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
