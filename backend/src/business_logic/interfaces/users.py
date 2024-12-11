@@ -15,3 +15,7 @@ class UsersRepositoryInterface(ABC):
     @abstractmethod
     async def login_user(self, email: str, password: str) -> UserLoginEntity:
         pass
+
+    @abstractmethod
+    async def refresh_token(self, refresh_token: str) -> UserLoginEntity:
+        pass

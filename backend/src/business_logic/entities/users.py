@@ -19,5 +19,9 @@ class UserEntity(BaseUserEntity):
 
 class UserLoginEntity(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str
     user_id: int
+
+class RefreshTokenEntity(BaseModel):
+    refresh_token: str

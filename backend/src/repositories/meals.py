@@ -1,10 +1,10 @@
 import logging
 
-from sqlalchemy import desc, delete
+from sqlalchemy import desc, delete, update
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload, selectinload
 
-from business_logic.entities.meals import CreateMealEntity
+from business_logic.entities.meals import CreateMealEntity, UpdateMealEntity
 from business_logic.interfaces.meals import MealsRepositoryInterface
 from database import AsyncSessionLocal
 from repositories.models import (
@@ -47,6 +47,7 @@ class MealsRepository(MealsRepositoryInterface):
             description=meal.description,
             user_id=meal.user_id,
             preparation=meal.preparation,
+            image_url=meal.image_url
         )
 
         self.db.add(new_meal)
@@ -74,13 +75,8 @@ class MealsRepository(MealsRepositoryInterface):
 
         # Odświeżanie danych posiłku po dodaniu produktów i powiązań z kategoriami
         await self.db.refresh(new_meal)
-        refreshed_meal = await self.db.execute(
-            select(Meal)
-            .options(joinedload(Meal.products))
-            .options(joinedload(Meal.category))
-            .filter(Meal.id == new_meal.id),
-        )
-        return refreshed_meal.unique().scalars().one()
+
+        return await self.get_meal(new_meal.id)
 
     async def delete_meal(self, meal_id: int) -> None:
         # Pobierz posiłek, który ma być usunięty
@@ -97,3 +93,46 @@ class MealsRepository(MealsRepositoryInterface):
 
         logger.info(f"Deleted meal: {meal}")
         return None
+
+    async def update_meal(self, meal: UpdateMealEntity) -> Meal:
+        update_meal_values = meal.model_dump(exclude_none=True, exclude={"products", "category_ids"})
+
+        update_meal = update(Meal).where(Meal.id == meal.id).values(update_meal_values)
+        await self.db.execute(update_meal)
+        logger.debug("XDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+        logger.debug(f"Updated meal: {meal}")
+        if meal.products is not None:
+            if not meal.products:
+                await self.db.execute(delete(Product).where(Product.meal_id == meal.id))
+            for product in meal.products:
+                if product.id is not None:
+                    update_product_values = product.model_dump(exclude_none=True)
+                    update_product_stmt = update(Product).where(Product.id == product.id).values(
+                        update_product_values)
+                    await self.db.execute(update_product_stmt)
+                else:
+                    new_product = Product(
+                        name=product.name,
+                        unit_of_measure=product.unit_of_measure,
+                        value=product.value,
+                        meal_id=meal.id,
+                    )
+                    self.db.add(new_product)
+
+        if meal.category_ids is not None:
+            await self.db.execute(
+                delete(meal_category_association).where(
+                    meal_category_association.c.meal_id == meal.id)
+            )
+            for category_id in meal.category_ids:
+                association = meal_category_association.insert().values(
+                    meal_id=meal.id,
+                    category_id=category_id,
+                )
+                await self.db.execute(association)
+
+        await self.db.commit()
+
+        return await self.get_meal(meal.id)
+
+

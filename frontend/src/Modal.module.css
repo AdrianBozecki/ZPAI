@@ -1,90 +1,191 @@
 .modalBackdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modalContent {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: auto;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 80vh;
-    overflow-y: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: auto;
+  max-width: 700px;
+  min-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .modalContent h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-.modalContent p {
-    margin: 10px 0;
-    color: #666;
+  margin-bottom: 20px;
 }
 
 .modalContent img {
-    max-width: 50%;
-    height: auto;
-    border-radius: 5px;
-        display: block; /* umożliwia wyśrodkowanie obrazu */
-    margin: auto; /* wyśrodkowuje obraz */
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
 }
 
-.modalContent button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
+.modalContent p {
+  margin-bottom: 20px;
 }
 
-.modalContent button:hover {
-    background-color: #0056b3;
+.commentSection {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.modalContent button:last-child {
-    background-color: #dc3545;
+.commentInput {
+  margin-top: 20px;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.modalContent button:last-child:hover {
-    background-color: #c82333;
+.addButton {
+    margin-top: 20px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #000033; /* Dark navy blue */
+  color: white;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #000022; /* Even darker navy blue on hover */
+}
+
+.commentsList {
+  margin-bottom: 20px;
+}
+
+.comment {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.likesSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.likeButton {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #000033; /* Dark navy blue */
+  color: white;
+  cursor: pointer;
+}
+
+.likeButton:hover {
+  background-color: #000022; /* Even darker navy blue on hover */
 }
 
 .exportSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .exportSection label {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-.exportSection button {
-    margin-top: 10px;
-    background-color: #28a745;
+.exportButton {
+  margin-top: 20px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #000033; /* Dark navy blue */
+  color: white;
+  cursor: pointer;
 }
 
-.exportSection button:hover {
-    background-color: #218838;
+.exportButton:hover {
+  background-color: #000022; /* Even darker navy blue on hover */
+}
+
+.deleteButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #000033; /* Dark navy blue */
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%; /* Full width */
+}
+
+.deleteButton:hover {
+  background-color: #000022; /* Even darker navy blue on hover */
+}
+
+.editButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%; /* Full width */
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.closeButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #dc3545; /* Red */
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%; /* Full width */
+}
+
+.closeButton:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.fullWidthNavyButton {
+  background-color: #000033; /* Darker navy blue color */
+  color: white;
+  width: 100%; /* Full width */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.fullWidthNavyButton:hover {
+  background-color: #000022; /* Even darker navy blue on hover */
+}
+
+@media (max-width: 415px) {
+  .modalContent {
+    width: 90%;
+  }
 }

@@ -18,3 +18,10 @@ class ProductEntity(BaseProductEntity):
 
     class Config:
         from_attributes = True
+
+
+class UpdateProductEntity(BaseModel):
+    id: int
+    value: float | None = None
+    unit_of_measure: UnitOfMeasureEnum | None = None
+    name: str | None = None

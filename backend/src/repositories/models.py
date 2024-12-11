@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Table, Float, DateTime, \
     UniqueConstraint
@@ -44,12 +44,24 @@ class Meal(Base):
     description: Mapped[str] = mapped_column(String)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     preparation: Mapped[str] = mapped_column(String)
+    image_url: Mapped[str] = mapped_column(String, nullable=True)
 
     user = relationship("User", back_populates="meals")
     category = relationship("Category", secondary=meal_category_association, back_populates="meals")
     products = relationship("Product", back_populates="meal")
     comments = relationship("Comment", back_populates="meal")
     likes = relationship("Like", back_populates="meal")
+
+class RefreshToken(Base):
+    __tablename__ = "refresh_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    token = Column(String, unique=True, nullable=False)
+    user_email = Column(String, ForeignKey("user.email"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    expires_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(days=14))
+
+    user = relationship("User", back_populates="refresh_tokens")
 
 class User(Base):
     __tablename__ = "user"
@@ -60,6 +72,7 @@ class User(Base):
     user_details_id: Mapped[int] = mapped_column(Integer, ForeignKey("user_details.id"))
 
     user_details = relationship("UserDetails", back_populates="user")
+    refresh_tokens = relationship("RefreshToken", back_populates="user", cascade="all, delete-orphan")
     meals = relationship("Meal", back_populates="user")
     comments = relationship("Comment", back_populates="user")
     likes = relationship("Like", back_populates="user")

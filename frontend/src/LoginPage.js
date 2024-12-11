@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importujesz Link z react-router-dom
-import styles from './LoginPage.module.css';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from './LoginPage.module.css'; // Import custom CSS
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -10,12 +11,12 @@ function LoginPage() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-  
+
     const loginData = {
       email: email,
       password: password,
     };
-  
+
     try {
       const response = await fetch('http://localhost:8000/users/login/', {
         method: 'POST',
@@ -24,12 +25,13 @@ function LoginPage() {
         },
         body: JSON.stringify(loginData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('token_type', data.token_type);
+        localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('user_id', data.user_id);
 
         navigate('/dashboard');
@@ -42,43 +44,46 @@ function LoginPage() {
     }
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>MealFuel</h1>
-      <form onSubmit={handleLogin} className={styles.form}>
-        <label className={styles.label}>
-          email:
-          <input
-            type="text"
-            value={email}
-            onChange={handleEmailChange}
-            className={styles.input}
-            placeholder="email"
-          />
-        </label>
-        <label className={styles.label}>
-          password:
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            className={styles.input}
-            placeholder="password"
-          />
-        </label>
-        <button type="submit" className={styles.button}>Sign in</button>
-        <Link to="/register" className={styles.linkContainer}>
-        < button type="button" className={styles.linkButton}>SIGN UP</button>
-        </Link>
-      </form>
+    <div className={`container ${styles.container}`}>
+      <div className={`card ${styles.card}`}>
+        <div className={`card-body ${styles.cardBody}`}>
+          <h3 className="card-title text-center">Login</h3>
+          <form onSubmit={handleLogin}>
+            <div className={`form-group ${styles.formGroup}`}>
+              <label htmlFor="email">Email address</label>
+              <input
+                  type="email"
+                  className={`form-control ${styles.formControl}`}
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+              />
+            </div>
+            <div className={`form-group ${styles.formGroup}`}>
+              <label htmlFor="password">Password</label>
+              <input
+                  type="password"
+                  className={`form-control ${styles.formControl}`}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+              />
+            </div>
+            <button type="submit" className={`btn btn-primary ${styles.btn}`}>
+              Login
+            </button>
+          </form>
+          <div className={`text-center mt-3 ${styles.textCenter}`}>
+            <p>Don't have an account?</p>
+            <Link to="/register" className={`btn btn-secondary ${styles.btn}`}>
+              Register
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
